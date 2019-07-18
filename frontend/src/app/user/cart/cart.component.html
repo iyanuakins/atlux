@@ -1,0 +1,83 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav [class.active]='sidebar' id="sidebar">
+        <div class="sidebar">
+            <ul>
+                <li><a [routerLink]="[ '/user' ]" [routerLinkActiveOptions]= "{ exact: true }" routerLinkActive="actives"> Dashboard </a></li>
+                <li><a [routerLink]="[ '/user/profile' ]" routerLinkActive="actives"> Profile </a></li>
+                <li class="pointer"><a data-toggle="modal" data-target="#orderModal"> Order </a></li>
+                <li><a [routerLink]="[ '/user/history' ]" routerLinkActive="actives"> History </a></li>
+                <li><a [routerLink]="[ '/user/review' ]" routerLinkActive="actives"> Review </a></li>
+                <li><a [routerLink]="[ '/user/contact' ]" routerLinkActive="actives"> Contact </a></li>
+                <li><a [routerLink]="[ '/user/about' ]" routerLinkActive="actives"> About </a></li>
+                <li><a [routerLink]="[ '/user/faq' ]" routerLinkActive="actives"> FAQ </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+        <button type="button" class="navbar-btn" [class.active]='sidebar' (click)="sidebarActive()">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+         
+        <app-modal></app-modal>
+        <div class="loader-overlay" *ngIf="loader">
+            <img src="./../../../assets/img/loader.gif" alt="" class="loader">
+        </div>
+        <div class="text-center mt-4" *ngIf="!cartItems">
+            <h2>Your Cart is empty, place order <a class="text-primary pointer" data-toggle="modal" data-target="#orderModal">here</a> </h2>
+        </div>
+        
+            <!-- <div class="text-center mt-4" *ngIf="!cartLength">
+                <h2>Your Cart is empty, place order <a class="text-primary pointer" data-toggle="modal" data-target="#orderModal">here</a> </h2>
+            </div>
+            <div class="container" *ngIf="cartLength < 2">
+                <div class="row">
+                    <div class="offset-lg-2 offset-md-2 offset-sm-2 col-lg-8 col-md-8 col-sm-10 mt-4" *ngFor="let cart of cartItems">
+                        <div class="container jumbotron">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <img src="./../../{{cart.carImage}}" class="img-responsive" alt="car image" width="100%">
+                                        </div>
+                                        <div class="col-5">
+                                            <p class="font-weight-bold text-uppercase">{{cart.carBrand}} {{cart.carModel}} ({{cart.carColour}})</p>
+                                            <p class="text-danger"><small>&#8358;{{cart.carPrice}}/KM</small></p>
+                                            <div>
+                                                <button type="button" class="btn btn-danger btn-sm ml-2" (click)="removeItem(cart.cartId)">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- for multiple cart items -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6 mt-3" *ngFor="let cart of cartItems">
+                        <div class="container jumbotron">
+                            <div class="row">
+                                <div class="col-12">
+                                    <img src="./../../{{cart.carImage}}" class="img-responsive" alt="car image" width="100%">
+                                    <p class="font-weight-bold text-uppercase">{{cart.carBrand}} {{cart.carModel}} ({{cart.carColour}})</p>
+                                    <p class="text-danger"><small>&#8358;{{cart.carPrice}}/KM</small></p>
+                                    <p class="text-right">
+                                        <button type="button" class="btn btn-danger btn-sm ml-2" (click)="removeItem(cart.cartId)">Remove</button>
+                                </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+</div>
+<app-userfooter></app-userfooter>

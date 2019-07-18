@@ -1,0 +1,117 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav [class.active]='sidebar' id="sidebar">
+        <div class="sidebar">
+            <ul>
+                <li><a [routerLink]="[ '/user' ]" [routerLinkActiveOptions]= "{ exact: true }" routerLinkActive="actives"> Dashboard </a></li>
+                <li><a [routerLink]="[ '/user/profile' ]" routerLinkActive="actives"> Profile </a></li>
+                <li><a [routerLink]="[ '/user/order' ]" routerLinkActive="actives"> Order </a></li>
+                <li><a [routerLink]="[ '/user/history' ]" routerLinkActive="actives"> History </a></li>
+                <li><a [routerLink]="[ '/user/review' ]" routerLinkActive="actives"> Review </a></li>
+                <li><a [routerLink]="[ '/user/contact' ]" routerLinkActive="actives"> Contact </a></li>
+                <li><a [routerLink]="[ '/user/about' ]" routerLinkActive="actives"> About </a></li>
+                <li><a [routerLink]="[ '/user/faq' ]" routerLinkActive="actives"> FAQ </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+        <button type="button" class="navbar-btn btn-success mb-2" [class.active]='sidebar' (click)="sidebarActive()">
+            <span class="navbar-toggler-icon"></span>
+        </button> 
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-4 col-lg-4 offset-lg-2 offset-md-2 col-sm-12">
+                            <form action="" [formGroup]="contactGroup">
+                                    <!-- <h1 class="text-center mb-3"></h1> -->
+                                          <div class="bg-success text-white mb-2 p-3" *ngIf="success === true">Authenticating....</div>
+                                          <div class="bg-danger text-white mb-2 p-3" *ngIf="message">{{message}}</div>
+                          
+                                              <div class="form-group">
+                                                <div class="input-group">
+                                                    <label for="firstName" class="sr-only">firstname</label>
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">First Name</div>
+                                                    </div>
+                                                  <input type="text" class="form-control" [class.is-invalid] ="contactGroup.controls.firstName.touched && contactGroup.controls.firstName.errors" formControlName="firstName" id="firstName" placeholder="First Name">
+                                                </div>
+                                                  <div class="alert-danger text-danger mt-1" *ngIf="contactGroup.controls.firstName.touched && contactGroup.controls.firstName.errors">
+                                                    <small [hidden]="!contactGroup.controls.firstName.errors.required">Field is required </small>
+                                                  </div>
+                                              </div>
+                          
+                                              <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="lastName" class="sr-only">lastname</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Last Name</div>
+                                                        </div>
+                                                        <input type="text" class="form-control" [class.is-invalid] ="contactGroup.controls.lastName.touched && contactGroup.controls.lastName.errors" formControlName="lastName" id="lastName" placeholder="Last Name">
+                                                    </div>
+                                                        <div class="alert-danger text-danger mt-1" *ngIf="contactGroup.controls.lastName.touched && contactGroup.controls.lastName.errors">
+                                                            <small [hidden]="!contactGroup.controls.lastName.errors.required">Field is required </small>
+                                                        </div>
+                                              </div>
+                          
+                                              <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="email" class="sr-only">email</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Email</div>
+                                                        </div>
+                                                        <input type="email" class="form-control" [class.is-invalid] ="contactGroup.controls.email.touched && contactGroup.controls.email.errors" formControlName="email" id="email" placeholder="johndoe@example.com">
+                                                    </div>
+                                                        <div class="alert-danger text-danger mt-1" *ngIf="contactGroup.controls.email.touched && contactGroup.controls.email.errors">
+                                                            <small [hidden]="!contactGroup.controls.email.errors.required">Field is required </small>
+                                                            <small [hidden]="!contactGroup.controls.email.errors.email">Enter valid email </small>
+                                                        </div>
+                                              </div>
+                                              
+                                              <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="phNum" class="sr-only">phNum</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Phone Number</div>
+                                                        </div>
+                                                        <input type="tel" class="form-control" [class.is-invalid] ="contactGroup.controls.phNum.touched && contactGroup.controls.phNum.errors" formControlName="phNum" id="phNum" placeholder="08030000000">
+                                                    </div>
+                                                        <div class="alert-danger text-danger mt-1" *ngIf="contactGroup.controls.phNum.touched && contactGroup.controls.phNum.errors">
+                                                            <small [hidden]="!contactGroup.controls.phNum.errors.required">Field is required</small>
+                                                            <small [hidden]="!contactGroup.controls.phNum.errors.minlength">Enter valid phone number</small> 
+                                                            <small [hidden]="!contactGroup.controls.phNum.errors.maxlength">Enter valid phone number</small>
+                                                            <small [hidden]="!contactGroup.controls.phNum.errors.pattern">Enter valid phone number</small>
+                                                        </div>
+                                              </div>
+                          
+                                              <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="message" class="sr-only">message</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Message</div>
+                                                        </div>
+                                                        <textarea class="form-control" [class.is-invalid] ="contactGroup.controls.message.touched && contactGroup.controls.message.errors" formControlName="message" id="message" placeholder="Type Message here"></textarea>
+                                                    </div>
+                                                        <div class="alert-danger text-danger mt-1" *ngIf="contactGroup.controls.message.touched && contactGroup.controls.message.errors">
+                                                            <small [hidden]="!contactGroup.controls.message.errors.required">Field is required</small>
+                                                        </div>
+                                              </div>
+                          
+                                              <div class="form-group">
+                                                  <button type="button" class="btn btn-success float-right" [disabled]="!contactGroup.valid" (click)="onSubmit()">Submit</button>
+                                              </div>
+                                  </form>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-12">
+                            <p><strong>OFFICE ADDRESS/SHOWROOM</strong></p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta assumenda ipsa atque veritatis ipsum ex temporibus, inventore iusto est vitae?</p>
+                            <p>Tel: 08030000000</p>
+                            <p>Opening Hours: 9:00 AM - 5:00 PM</p>       
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-userfooter></app-userfooter>
