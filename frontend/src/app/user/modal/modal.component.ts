@@ -17,7 +17,6 @@ export class ModalComponent implements OnInit {
               private router: Router) {
       this.orderGroup = this.form.group({
         pickUpDate: ['', Validators.required],
-        dropOffDate: ['', Validators.required],
         pickUpTime: ['00:00', Validators.required],
         dropOffTime: ['00:00', Validators.required],
         category: ['all', Validators.required],

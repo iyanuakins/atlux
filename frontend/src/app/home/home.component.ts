@@ -16,7 +16,6 @@ export class HomeComponent implements OnInit {
               private homeService: HomeService) { 
       this.quickOrderGroup = this.form.group({
         pickUpDate: ['', Validators.required],
-        dropOffDate: ['', Validators.required],
         pickUpTime: ['00:00', Validators.required],
         dropOffTime: ['00:00', Validators.required],
         category: ['all', Validators.required],

@@ -128,30 +128,47 @@ exports.viewCar = (req, res) => {
 
 exports.getUserCart = (req, res) => {
     Models.Carts.find({username: req.params.user})
-        .then((items) => {
-            let newItems = [];
-           items.map((item, index) => {
-                Models.Cars.findById(item.carId)
-                .then((car) => {
-                    let data = {
-                        cartId: item._id,
-                        carId: car._id,
-                        carBrand: car.brand,
-                        carModel: car.model,
-                        carPrice: car.pricePerKM,
-                        carImage: car.image,
-                        carColour: car.colour
-                    }
-                    newItems.push(data);
-                    if ((items.length - 1) == index) {
-                      return res.status(200).json({"cart": newItems});
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                    res.json({error: err})
+        .then((items) => { 
+            if (!items.length) { 
+                return res.status(200).json({"success": false});
+            } else {
+                let newItems = [];
+                items.map((item, index) => {
+                    Models.Cars.findById(item.carId)
+                    .then((car) => {
+                        
+                        if ((items.length - 1) == index) {
+                            let data = {
+                                cartId: item._id,
+                                carId: car._id,
+                                carBrand: car.brand,
+                                carModel: car.model,
+                                carPrice: car.pricePerKM,
+                                carImage: car.image,
+                                carColour: car.colour
+                            }
+                            newItems.push(data);
+
+                        return res.status(200).json({"success": true, "cart": newItems});
+                        } else {
+                            let data = {
+                                cartId: item._id,
+                                carId: car._id,
+                                carBrand: car.brand,
+                                carModel: car.model,
+                                carPrice: car.pricePerKM,
+                                carImage: car.image,
+                                carColour: car.colour
+                            }
+                            newItems.push(data);
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        res.json({error: err})
+                    });
                 });
-            });
+            }
         })
         .catch((err) => {
             console.log(err);

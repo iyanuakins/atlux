@@ -26,9 +26,9 @@
         <div class="loader-overlay" *ngIf="loader">
             <img src="./../../../assets/img/loader.gif" alt="" class="loader">
         </div>
-        <div class="text-center mt-4" *ngIf="!cartItems">
+        <!-- <div class="text-center mt-4" *ngIf="!cartItems">
             <h2>Your Cart is empty, place order <a class="text-primary pointer" data-toggle="modal" data-target="#orderModal">here</a> </h2>
-        </div>
+        </div> -->
         
             <!-- <div class="text-center mt-4" *ngIf="!cartLength">
                 <h2>Your Cart is empty, place order <a class="text-primary pointer" data-toggle="modal" data-target="#orderModal">here</a> </h2>
@@ -61,23 +61,218 @@
             <!-- for multiple cart items -->
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-6 mt-3" *ngFor="let cart of cartItems">
-                        <div class="container jumbotron">
-                            <div class="row">
-                                <div class="col-12">
-                                    <img src="./../../{{cart.carImage}}" class="img-responsive" alt="car image" width="100%">
-                                    <p class="font-weight-bold text-uppercase">{{cart.carBrand}} {{cart.carModel}} ({{cart.carColour}})</p>
-                                    <p class="text-danger"><small>&#8358;{{cart.carPrice}}/KM</small></p>
-                                    <p class="text-right">
-                                        <button type="button" class="btn btn-danger btn-sm ml-2" (click)="removeItem(cart.cartId)">Remove</button>
-                                </p>
+                    <div class="col-12">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-6 mt-3" *ngFor="let cart of cartItems">
+                            <div class="container jumbotron">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <img src="./../../{{cart.carImage}}" class="img-responsive" alt="car image" width="100%">
+                                        <p class="font-weight-bold text-uppercase">{{cart.carBrand}} {{cart.carModel}} ({{cart.carColour}})</p>
+                                        <p class="text-danger"><small>&#8358;{{cart.carPrice}}/KM</small></p>
+                                        <p class="text-right">
+                                            <span id='{{cart.cartId}}'></span>
+                                            <button type="button" class="btn btn-danger btn-sm ml-2" (click)="removeItem(cart.cartId)">Remove</button>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
+                        </div> 
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="jumbotron">
+                                <form action="" [formGroup]= "checkoutGroup">
+                                        
+                                    <div class="form-row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+                                            <div class="input-group">
+                                                <label for="pickUpDate" class="sr-only">Pickup Date</label>
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Pickup Date</div>
+                                                </div>
+                                                <input type="date" class="form-control" formControlName="pickUpDate" id="pickUpDate">
+                                            </div>
+                                            <div class="text-danger p-2 mt-1" *ngIf="checkoutGroup.controls.pickUpDate.touched && checkoutGroup.controls.pickUpDate.errors">Select pickup date</div>
+                                        </div>
+                                    
+                                        <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+                                            <div class="input-group">
+                                                <label for="pickUpTime" class="sr-only">Pick Up Time</label>
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Pick Up Time</div>
+                                                </div>
+                                                <select formControlName="pickUpTime" id="pickUpTime" class="form-control">
+                                                    <option value="00:00">00:00</option>
+                                                    <option value="00:30">00:30</option>
+                                                    <option value="01:00">01:00</option>
+                                                    <option value="01:30">01:30</option>
+                                                    <option value="02:00">02:00</option>
+                                                    <option value="02:30">02:30</option>
+                                                    <option value="03:00">03:00</option>
+                                                    <option value="03:30">03:30</option>
+                                                    <option value="04:00">04:00</option>
+                                                    <option value="04:30">04:30</option>
+                                                    <option value="05:00">05:00</option>
+                                                    <option value="05:30">05:30</option>
+                                                    <option value="06:00">06:00</option>
+                                                    <option value="06:30">06:30</option>
+                                                    <option value="07:00">07:00</option>
+                                                    <option value="07:30">07:30</option>
+                                                    <option value="08:00">08:00</option>
+                                                    <option value="08:30">08:30</option>
+                                                    <option value="09:00">09:00</option>
+                                                    <option value="09:30">09:30</option>
+                                                    <option value="10:00">10:00</option>
+                                                    <option value="10:30">10:30</option>
+                                                    <option value="11:00">11:00</option>
+                                                    <option value="11:30">11:30</option>
+                                                    <option value="12:00">12:00</option>
+                                                    <option value="12:30">12:30</option>
+                                                    <option value="13:00">13:00</option>
+                                                    <option value="13:30">13:30</option>
+                                                    <option value="14:00">14:00</option>
+                                                    <option value="14:30">14:30</option>
+                                                    <option value="15:00">15:00</option>
+                                                    <option value="15:30">15:30</option>
+                                                    <option value="16:00">16:00</option>
+                                                    <option value="16:30">16:30</option>
+                                                    <option value="17:00">17:00</option>
+                                                    <option value="17:30">17:30</option>
+                                                    <option value="18:00">18:00</option>
+                                                    <option value="18:30">18:30</option>
+                                                    <option value="19:00">19:00</option>
+                                                    <option value="19:30">19:30</option>
+                                                    <option value="20:00">20:00</option>
+                                                    <option value="20:30">20:30</option>
+                                                    <option value="21:00">21:00</option>
+                                                    <option value="21:30">21:30</option>
+                                                    <option value="22:00">22:00</option>
+                                                    <option value="22:30">22:30</option>
+                                                    <option value="23:00">23:00</option>
+                                                    <option value="23:30">23:30</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-danger p-2 mt-1" *ngIf="checkoutGroup.controls.pickUpTime.touched && checkoutGroup.controls.pickUpTime.errors">Select pickup time</div>
+                                        </div>
+                                        
+                                        <!-- <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+                                                <div class="input-group">
+                                                    <label for="dropOffTime" class="sr-only">Drop off Time</label>
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">Drop off Time</div>
+                                                    </div>
+                                                    <select formControlName="dropOffTime" id="dropOffTime" class="form-control">
+                                                        <option value="00:00">00:00</option>
+                                                        <option value="00:30">00:30</option>
+                                                        <option value="01:00">01:00</option>
+                                                        <option value="01:30">01:30</option>
+                                                        <option value="02:00">02:00</option>
+                                                        <option value="02:30">02:30</option>
+                                                        <option value="03:00">03:00</option>
+                                                        <option value="03:30">03:30</option>
+                                                        <option value="04:00">04:00</option>
+                                                        <option value="04:30">04:30</option>
+                                                        <option value="05:00">05:00</option>
+                                                        <option value="05:30">05:30</option>
+                                                        <option value="06:00">06:00</option>
+                                                        <option value="06:30">06:30</option>
+                                                        <option value="07:00">07:00</option>
+                                                        <option value="07:30">07:30</option>
+                                                        <option value="08:00">08:00</option>
+                                                        <option value="08:30">08:30</option>
+                                                        <option value="09:00">09:00</option>
+                                                        <option value="09:30">09:30</option>
+                                                        <option value="10:00">10:00</option>
+                                                        <option value="10:30">10:30</option>
+                                                        <option value="11:00">11:00</option>
+                                                        <option value="11:30">11:30</option>
+                                                        <option value="12:00">12:00</option>
+                                                        <option value="12:30">12:30</option>
+                                                        <option value="13:00">13:00</option>
+                                                        <option value="13:30">13:30</option>
+                                                        <option value="14:00">14:00</option>
+                                                        <option value="14:30">14:30</option>
+                                                        <option value="15:00">15:00</option>
+                                                        <option value="15:30">15:30</option>
+                                                        <option value="16:00">16:00</option>
+                                                        <option value="16:30">16:30</option>
+                                                        <option value="17:00">17:00</option>
+                                                        <option value="17:30">17:30</option>
+                                                        <option value="18:00">18:00</option>
+                                                        <option value="18:30">18:30</option>
+                                                        <option value="19:00">19:00</option>
+                                                        <option value="19:30">19:30</option>
+                                                        <option value="20:00">20:00</option>
+                                                        <option value="20:30">20:30</option>
+                                                        <option value="21:00">21:00</option>
+                                                        <option value="21:30">21:30</option>
+                                                        <option value="22:00">22:00</option>
+                                                        <option value="22:30">22:30</option>
+                                                        <option value="23:00">23:00</option>
+                                                        <option value="23:30">23:30</option>
+                                                    </select>
+                                                </div>
+                                                <div class="text-danger p-2 mt-1" *ngIf="checkoutGroup.controls.dropOffTime.touched && checkoutGroup.controls.dropOffTime.errors">Select dropoff time</div>
+                                        </div> -->
+                                    </div>
+                                    
+                                    <div class="form row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+                                            <div class="input-group">
+                                                <label for="location" class="sr-only">Pick Up Location</label>
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Location</div>
+                                                </div>
+                                                <select formControlName="location" id="location" class="form-control" (change)="calculateDistance()">
+                                                        <option value="projaro">Projaro</option>
+                                                        <option value="apo">Apo</option>
+                                                        <option value="utako">Utako</option>
+                                                        <option value="gwagwalada">Gwagwalada</option>
+                                                        <option value="lugbe">Lugbe</option>
+                                                        <option value="garki">Garki</option>
+                                                        <option value="asokoro">Asokoro</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-danger p-2 mt-1" *ngIf="checkoutGroup.controls.location.touched && checkoutGroup.controls.location.errors">Select pickup location</div>
+                                            
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+                                            <div class="input-group">
+                                                <label for="destination" class="sr-only">Destination</label>
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Destination</div>
+                                                </div>
+                                                <select formControlName="destination" id="destination" class="form-control" (change)="calculateDistance()">
+                                                    <option value="projaro">Projaro</option>
+                                                    <option value="apo">Apo</option>
+                                                    <option value="utako">Utako</option>
+                                                    <option value="gwagwalada">Gwagwalada</option>
+                                                    <option value="lugbe">Lugbe</option>
+                                                    <option value="garki">Garki</option>
+                                                    <option value="asokoro">Asokoro</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-danger p-2 mt-1" *ngIf="checkoutGroup.controls.destination.touched && checkoutGroup.controls.destination.errors">Select Destination</div>
+                                        </div>
+                                        
+                                    </div>
+     
+                                    <h3 class="mt-2"><strong>Total Cost: </strong> <span class="text-danger">{{totalCost}}</span></h3>
+                                    <button type="button" class="btn bg-success btn-outline-light btn-lg float-right" [disabled]="!checkoutGroup.valid" (click)="checkout()"> Checkout </button>
+                          
+                                </form>
                         </div>
                     </div>
                 </div>
+                
+
             </div>
         
     </div>
 </div>
 <app-userfooter></app-userfooter>
+
+<!-- AIzaSyDvzdp9ZCoYYa2OW-AsprnH-KihFlDf1EA -->

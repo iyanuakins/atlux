@@ -13,7 +13,6 @@ export class UserService {
   newCartCount: Number;
   cartItems: Number;
   cartData: any;
-  userCartItems: any;
   constructor(private http: HttpClient,
               private router: Router) { 
 
@@ -91,6 +90,11 @@ export class UserService {
 
   userGetCarTypes (): Observable<any> {
     return this.http.get<any>(`${this.url}/user/car/getcartypes}`);
+  }
+
+  getDistance (latitude, longitude, deslatitude, deslongitude): Observable<any> {
+    let apiKey = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
+    return this.http.get(`http://maps.googleapis.com/maps/api/distancematrix/json?&origins=${latitude},-${longitude}&destination=${deslatitude},-${deslongitude}&mode=driving&key=${apiKey}`);
   }
 
 }
