@@ -131,9 +131,9 @@ exports.getUserCart = (req, res) => {
         .then((items) => { 
             if (!items.length) { 
                 return res.status(200).json({"success": false});
-            } else {
+            } else { 
                 let newItems = [];
-                items.map((item, index) => {
+                return Promise.all(items.map((item, index) => {
                     Models.Cars.findById(item.carId)
                     .then((car) => {
                         
@@ -167,7 +167,7 @@ exports.getUserCart = (req, res) => {
                         console.log(err);
                         res.json({error: err})
                     });
-                });
+                }))
             }
         })
         .catch((err) => {
@@ -186,3 +186,77 @@ exports.countCart = (req, res) => {
             req.json({error: err})
         });
 }
+
+//To add order into order collection.
+exports.addOrder = (req, res) => {
+    Models.Carts.find({username: req.body.username})
+        .then((cartItems) => {
+            Promise.all (cartItems.map((item, index) => {
+                //Destructure request body
+                let {
+                    pickUpDate,
+                    pickUpTime,
+                    location,
+                    destination,
+                    totalCost,
+                    username
+                  } = req.body
+                
+                if ((cartItems.length - 1) == index) {
+                    //Model new order data
+                    let data = { 
+                        pickUpDate,
+                        pickUpTime,
+                        location,
+                        destination,
+                        totalCost,
+                        username,
+                        carId: item.carId
+                    }
+                    let newOrder = new Models.Orders(data);
+                    newOrder.save()
+                        .then(() => {
+                            Models.Carts.findByIdAndDelete(item._id)
+                                .then((removed) => {
+                                    return res.status(200).json({success: true})
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                    req.json({"success": false})
+                                });
+                        }).catch((err) => {
+                            console.log(err);
+                            return res.status(200).json({success: false})
+                        }); 
+                } else {
+                    //Model new order data
+                    let data = { 
+                        pickUpDate,
+                        pickUpTime,
+                        location,
+                        destination,
+                        totalCost,
+                        username,
+                        carId: item.carId
+                    }
+                    let newOrder = new Models.Orders(data);
+                    newOrder.save()
+                        .then(() => {
+                            Models.Carts.findByIdAndDelete(item._id)
+                                .then((removed) => {
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                    req.json({"success": false})
+                                });
+                        }).catch((err) => {
+                            console.log(err);
+                            return res.status(200).json({success: false})
+                        }); 
+                }
+                
+            }))
+        }).catch((err) => {
+        
+        });
+ }

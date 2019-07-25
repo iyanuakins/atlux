@@ -13,7 +13,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 export class CartComponent implements OnInit {
   checkoutGroup: FormGroup;
-  sidebar: boolean;
+  sidebar: Boolean;
   cartItems: any;
   loader: Boolean;
   totalCost: Number;
@@ -76,8 +76,8 @@ export class CartComponent implements OnInit {
       user: this.userService.loggedUser,
       totalCost: this.totalCost
     }
-    
     localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
+    this.router.navigate(['user/checkout/payment']);
   }
 
   // calculateDistance () {
@@ -139,7 +139,7 @@ export class CartComponent implements OnInit {
   //   }
   // }
 
-  ngOnInit() { 
+  ngOnInit () { 
     this.loader = true;
     this.userService.getUserCart().subscribe((res) => {
         if (res.success) {

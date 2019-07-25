@@ -19,7 +19,6 @@ import { ReviewComponent } from './user/review/review.component';
 import { CartComponent } from './user/cart/cart.component';
 import { SidebarComponent } from './user/sidebar/sidebar.component';
 import { NavbarComponent } from './user/navbar/navbar.component';
-import { ViewComponent } from './user/view/view.component';
 import { UserfaqComponent } from './user/userfaq/userfaq.component';
 import { UsercontactComponent } from './user/usercontact/usercontact.component';
 import { UseraboutComponent } from './user/userabout/userabout.component';
@@ -31,6 +30,7 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
 import { UserService } from './services/user.service';
 import { ModalComponent } from './user/modal/modal.component';
 import { HomeService } from './services/home.service';
+import { PaymentComponent } from './user/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -51,12 +51,12 @@ import { HomeService } from './services/home.service';
     CartComponent,
     SidebarComponent,
     NavbarComponent,
-    ViewComponent,
     UserfaqComponent,
     UsercontactComponent,
     UseraboutComponent,
     UserfooterComponent,
-    ModalComponent
+    ModalComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,

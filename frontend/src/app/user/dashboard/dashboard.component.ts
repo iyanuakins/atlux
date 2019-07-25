@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,9 +9,10 @@ import { Router } from '@angular/router';
               '../style.css']
 })
 export class DashboardComponent implements OnInit {
-  private _opened: boolean = true;
-  sidebar: boolean;
-  constructor(private router: Router) { }
+  sidebar: Boolean;
+  message: String = '';
+  constructor(private router: Router,
+              private userService: UserService) { }
 
   sidebarActive () {
     if (this.sidebar === true ) {
@@ -20,10 +22,14 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  private _toggleSidebar() {
-    this._opened = !this._opened;
-  }
   ngOnInit() {
+    if (this.userService.orderIsCompleted) {
+      this.message = 'Order Completed';
+      setTimeout(() => {
+        this.message = '';
+        this.userService.orderIsCompleted = false;
+      }, 2000);
+    }
   }
 
 }

@@ -24,7 +24,11 @@ const OrderSchema = new Schema({
         required: true,
         default: 'pending'
     },
-    pickUp: {
+    location: {
+        type: String,
+        required: true
+    },
+    destination: {
         type: String,
         required: true
     },
@@ -34,17 +38,18 @@ const OrderSchema = new Schema({
     },
     distance: {
         type: String,
-        required: true
+        required: true,
+        default: '30'
     },
     reviewed: {
         type: String,
         default: 'pending',
     },
-    time: {
+    pickUpTime: {
         type: String,
         required: true
     },
-    date: {
+    pickUpDate: {
         type: String,
         required: true
     }

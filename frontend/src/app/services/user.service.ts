@@ -13,6 +13,7 @@ export class UserService {
   newCartCount: Number;
   CartItems = Number;
   cartData: any;
+  orderIsCompleted: Boolean;
   constructor(private http: HttpClient,
               private router: Router) { 
 
@@ -102,9 +103,12 @@ export class UserService {
 
 
   checkout (data): Observable<any> {
-    return this.http.post<any>(`${this.url}/user/cart/checkout}`, data);
+    return this.http.post<any>(`${this.url}/user/cart/checkout`, data);
   }
 
+  makePayment (data): Observable<any> {
+    return this.http.post<any>(`${this.url}/user/cart/payment`, data);
+  }
   // getDistance (latitude, longitude, deslatitude, deslongitude): Observable<any> {
   //   let apiKey = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
   //   return this.http.get(`http://maps.googleapis.com/maps/api/distancematrix/json?&origins=${latitude},-${longitude}&destination=${deslatitude},-${deslongitude}&mode=driving&key=${apiKey}`);
