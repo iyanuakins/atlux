@@ -11,7 +11,7 @@ export class UserService {
   url: String = "http://localhost:4000";
   cars: Object;
   newCartCount: Number;
-  cartItems: Number;
+  CartItems = Number;
   cartData: any;
   constructor(private http: HttpClient,
               private router: Router) { 
@@ -68,6 +68,14 @@ export class UserService {
     return this.http.get<any>(`${this.url}/user/viewcar/${carId}`);
   }
 
+  getCarBrands (): Observable<any> {
+    return this.http.get<any>(`${this.url}/home/car/getcarbrands`);
+  }
+
+  getCarTypes (): Observable<any> {
+    return this.http.get<any>(`${this.url}/home/car/getcartypes`);
+  }
+
   addToCart (data): Observable<any> {
     return this.http.post<any>(`${this.url}/user/cart/add`, data);
   }
@@ -92,9 +100,14 @@ export class UserService {
     return this.http.get<any>(`${this.url}/user/car/getcartypes}`);
   }
 
-  getDistance (latitude, longitude, deslatitude, deslongitude): Observable<any> {
-    let apiKey = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
-    return this.http.get(`http://maps.googleapis.com/maps/api/distancematrix/json?&origins=${latitude},-${longitude}&destination=${deslatitude},-${deslongitude}&mode=driving&key=${apiKey}`);
+
+  checkout (data): Observable<any> {
+    return this.http.post<any>(`${this.url}/user/cart/checkout}`, data);
   }
+
+  // getDistance (latitude, longitude, deslatitude, deslongitude): Observable<any> {
+  //   let apiKey = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
+  //   return this.http.get(`http://maps.googleapis.com/maps/api/distancematrix/json?&origins=${latitude},-${longitude}&destination=${deslatitude},-${deslongitude}&mode=driving&key=${apiKey}`);
+  // }
 
 }

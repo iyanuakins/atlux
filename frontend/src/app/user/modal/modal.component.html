@@ -18,7 +18,7 @@
                       </div>
                       <input type="date" class="form-control" formControlName="pickUpDate" id="pickUpDate">
                   </div>
-                  <div class="text-danger p-2 mt-1" *ngIf="orderGroup.controls.pickUpDate.touched && orderGroup.controls.pickUpDate.errors">Select Date of Birth</div>
+                  <div class="text-danger p-2 mt-1" *ngIf="orderGroup.controls.pickUpDate.touched && orderGroup.controls.pickUpDate.errors">Select Pickup date</div>
               </div>
 
 
@@ -79,7 +79,7 @@
                           <option value="23:30">23:30</option>
                       </select>
                   </div>
-                  <div class="text-danger p-2 mt-1" *ngIf="orderGroup.controls.pickUpTime.touched && orderGroup.controls.pickUpTime.errors">Select Type</div>
+                  <div class="text-danger p-2 mt-1" *ngIf="orderGroup.controls.pickUpTime.touched && orderGroup.controls.pickUpTime.errors">Select Pickup time</div>
               </div>
 
               <!-- <div class="form-group">
@@ -91,7 +91,7 @@
                       <input type="date" class="form-control" formControlName="dropOffDate" id="dropOffDate">
                   </div>
                   <div class="text-danger p-2 mt-1" *ngIf="orderGroup.controls.dropOffDate.touched && orderGroup.controls.dropOffDate.errors">Select Date of Birth</div>
-              </div> -->
+              </div> 
               
               <div class="form-group">
                   <div class="input-group">
@@ -151,7 +151,7 @@
                       </select>
                   </div>
                   <div class="text-danger p-2 mt-1" *ngIf="orderGroup.controls.dropOffTime.touched && orderGroup.controls.dropOffTime.errors">Select Type</div>
-              </div>
+              </div>-->
               
               <div class="form-group">
                   <div class="input-group">
@@ -174,8 +174,7 @@
                           <div class="input-group-text">Select Maker</div>
                       </div>
                       <select formControlName="maker" id="maker"  class="form-control">
-                          <option value="lexus">LEXUS</option>
-                          <option value="mercedes">MERCEDES</option>
+                            <option *ngFor="let brand of carBrands" value="{{brand.name}}">{{brand.name | uppercase}}</option>
                       </select>
                   </div>
                   <div class="text-danger p-2 mt-1" *ngIf="orderGroup.controls.category.touched && orderGroup.controls.category.errors">Select Maker</div>
@@ -188,8 +187,7 @@
                           <div class="input-group-text">Select Type</div>
                       </div>
                       <select formControlName="type" id="type" class="form-control">
-                          <option value="suv">SUV</option>
-                          <option value="sedan">SEDAN</option>
+                            <option  *ngFor="let type of carTypes" value="{{type.name}}">{{type.name | uppercase}}</option>
                       </select>
                   </div>
                   <div class="text-danger p-2 mt-1" *ngIf="orderGroup.controls.category.touched && orderGroup.controls.category.errors">Select Type</div>

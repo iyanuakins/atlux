@@ -16,7 +16,8 @@ const OrderSchema = new Schema({
     },
     driverId: {
         type: String,
-        required: true
+        required: true,
+        default: 'waiting'
     },
     status: {
         type: String,
@@ -24,10 +25,6 @@ const OrderSchema = new Schema({
         default: 'pending'
     },
     pickUp: {
-        type: String,
-        required: true
-    },
-    dropOff: {
         type: String,
         required: true
     },
@@ -41,7 +38,7 @@ const OrderSchema = new Schema({
     },
     reviewed: {
         type: String,
-        default: true
+        default: 'pending',
     },
     time: {
         type: String,
@@ -53,5 +50,4 @@ const OrderSchema = new Schema({
     }
 });
 
-Orders = mongoose.model('Orders', OrderSchema);
-module.exports = Orders;
+module.exports = mongoose.model('Orders', OrderSchema);

@@ -144,7 +144,7 @@ export class AuthComponent implements OnInit {
       this.logMessage = 'Logout Successful';
       setTimeout(() => {
         this.logMessage = '';
-      }, 3000)
+      }, 2000)
     }
   }
 }

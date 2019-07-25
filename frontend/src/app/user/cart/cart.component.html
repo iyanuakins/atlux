@@ -26,9 +26,9 @@
         <div class="loader-overlay" *ngIf="loader">
             <img src="./../../../assets/img/loader.gif" alt="" class="loader">
         </div>
-        <!-- <div class="text-center mt-4" *ngIf="!cartItems">
+        <div class="text-center mt-4" *ngIf="cartItems == null">
             <h2>Your Cart is empty, place order <a class="text-primary pointer" data-toggle="modal" data-target="#orderModal">here</a> </h2>
-        </div> -->
+        </div>
         
             <!-- <div class="text-center mt-4" *ngIf="!cartLength">
                 <h2>Your Cart is empty, place order <a class="text-primary pointer" data-toggle="modal" data-target="#orderModal">here</a> </h2>
@@ -59,7 +59,7 @@
             </div> -->
 
             <!-- for multiple cart items -->
-            <div class="container">
+            <div class="container" *ngIf="cartItems">
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
@@ -225,7 +225,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Location</div>
                                                 </div>
-                                                <select formControlName="location" id="location" class="form-control" (change)="calculateDistance()">
+                                                <select formControlName="location" id="location" class="form-control">
                                                         <option value="projaro">Projaro</option>
                                                         <option value="apo">Apo</option>
                                                         <option value="utako">Utako</option>
@@ -245,7 +245,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Destination</div>
                                                 </div>
-                                                <select formControlName="destination" id="destination" class="form-control" (change)="calculateDistance()">
+                                                <select formControlName="destination" id="destination" class="form-control">
                                                     <option value="projaro">Projaro</option>
                                                     <option value="apo">Apo</option>
                                                     <option value="utako">Utako</option>

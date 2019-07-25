@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class ModalComponent implements OnInit {
   orderGroup : FormGroup;
   catSelected: string = "";
+  carBrands: Object;
+  carTypes: Object;
 
   constructor(private form: FormBuilder,
               private userService: UserService,
@@ -18,7 +20,7 @@ export class ModalComponent implements OnInit {
       this.orderGroup = this.form.group({
         pickUpDate: ['', Validators.required],
         pickUpTime: ['00:00', Validators.required],
-        dropOffTime: ['00:00', Validators.required],
+        //dropOffTime: ['00:00', Validators.required],
         category: ['all', Validators.required],
         type: ['suv', Validators.required],
         maker: ['lexus', Validators.required]
@@ -36,11 +38,11 @@ export class ModalComponent implements OnInit {
    }
 
    onSubmit() {
-    let orderData = {pickUpTime: this.orderGroup.value.pickUpTime,
-                      pickUpDate: this.orderGroup.value.pickUpDate,
-                      dropOffTime: this.orderGroup.value.dropOffTime,
-                      dropOffDate: this.orderGroup.value.dropOffDate}
-    localStorage.setItem('orderData', JSON.stringify(orderData))
+    // let orderData = {pickUpTime: this.orderGroup.value.pickUpTime,
+    //                   pickUpDate: this.orderGroup.value.pickUpDate,
+    //                   dropOffTime: this.orderGroup.value.dropOffTime,
+    //                   dropOffDate: this.orderGroup.value.dropOffDate}
+    // localStorage.setItem('orderData', JSON.stringify(orderData))
 
     let category = this.orderGroup.value.category
     let type = this.orderGroup.value.type
@@ -63,6 +65,14 @@ export class ModalComponent implements OnInit {
     }
    }
   ngOnInit() {
+    this.userService.getCarBrands().subscribe((res) => {
+      
+      this.carBrands = res;
+    })
+
+    this.userService.getCarTypes().subscribe((res) => {
+      this.carTypes = res;
+    })
   }
 
 }
