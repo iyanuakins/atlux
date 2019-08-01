@@ -37,7 +37,7 @@
                           <tr>
                             <th scope="col">#</th>
                             <th scope="col">Order ID</th>
-                            <th scope="col">Car</th>
+                            <!-- <th scope="col">Car</th> -->
                             <th scope="col">Cost (&#8358;)</th>
                             <th scope="col">From</th>
                             <th scope="col">Dest</th>
@@ -50,7 +50,7 @@
                           <tr *ngFor="let order of orders; let i = index">
                             <td>{{i + 1}}</td>
                             <td>{{(i + 1) * 134}}</td>
-                            <td>{{order.carBrand}} {{order.carModel}}</td>
+                            <!-- <td>{{order.carBrand}} {{order.carModel}}</td> -->
                             <td>{{order.totalCost}}</td>
                             <td>{{order.location}}</td>
                             <td>{{order.destination}}</td>

@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
     if (!!localStorage.getItem('cartItems') && !!localStorage.getItem('checkoutData')) {
       let checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
-      checkoutData.user = this.userService.loggedUser;
+      checkoutData.username = this.userService.loggedUser;
       localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
       let carts = JSON.parse(localStorage.getItem('cartItems'));
       this.userService.transferCartItems(carts).subscribe((res) => {

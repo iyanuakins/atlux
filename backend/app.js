@@ -5,9 +5,9 @@ const PORT = process.env.PORT || 4000;
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const homeRoutes = require('./routes/homeRoutes');
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+const homeRoutes = require('./routes/home');
 const jwt = require('jsonwebtoken');
 const secKey = "03SecretKey04";
 

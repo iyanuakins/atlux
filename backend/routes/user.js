@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const profile = require('../controllers/profileController');
-const admin = require('../controllers/adminController');
-const user = require('../controllers/userController');
+const profile = require('../controllers/profile');
+const admin = require('../controllers/admin');
+const user = require('../controllers/user');
 
 //Genaral User Routes
 router.get('/profile/view/:username', profile.profileView);

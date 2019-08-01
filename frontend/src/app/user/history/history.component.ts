@@ -24,10 +24,9 @@ export class HistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getOrders().subscribe((res) => {
-      if (res.sucess) {
+    this.userService.getOrders().subscribe((res) => { 
+      if (res.success) {
         if (res.available) {
-          console.log(res);
           this.orders = res.orders;
         } else {
           this.orders = [];

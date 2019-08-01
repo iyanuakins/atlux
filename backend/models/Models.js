@@ -1,10 +1,10 @@
-const Users = require('./userModel');
-const Cars = require('./carModel');
-const Orders = require('./orderModel');
-const Reviews = require('./reviewModel');
-const Carts = require('./cartModel');
-const Brands = require('./brandModel');
-const Types = require('./typeModel');
+const Users = require('./user');
+const Cars = require('./car');
+const Orders = require('./order');
+const Reviews = require('./review');
+const Carts = require('./cart');
+const Brands = require('./brand');
+const Types = require('./type');
 
 const Models = {
     Users,
