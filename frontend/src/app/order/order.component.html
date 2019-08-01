@@ -1,0 +1,93 @@
+<app-nav></app-nav>
+<app-cartbtn></app-cartbtn>
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalTitle" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+  <div class="modal-content">
+      <div class="pr-2 float-right">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" >&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+              <nav>
+                  <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Details</a>
+                      <a class="nav-item nav-link" id="nav-rating-tab" data-toggle="tab" href="#nav-rating" role="tab" aria-controls="nav-profile" aria-selected="false">Ratings and Reviews</a>
+                  </div>
+              </nav>
+              <div class="tab-content mt-4" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                      <div class="card shadow-sm">
+                          <img src="{{carViewData?.image}}" class="card-img-top mt-2" alt="car image">
+                          <div class="card-body">
+                              <h5 class="card-title text-center">{{carViewData?.brand}} {{carViewData?.model}}</h5>
+                              <p class="card-text">Colour: {{carViewData?.colour | uppercase }}</p>
+                              <p class="card-text">Price: &#8358;{{carViewData?.pricePerKM}}/KM</p>
+                              <p class="card-text">Rating: {{carViewData?.rating}}</p>
+                              <p class="card-text">Description: {{carViewData?.description}}</p>
+                              <p class="text-right">
+                                  <button class="btn btn-outline-success" (click)="addToCart(carViewData?._id, carViewData?.image, carViewData?.brand, carViewData?.model, carViewData?.colour, carViewData?.pricePerKM)">Add to cart</button>
+                                  <button class="btn btn-outline-danger ml-2" (click)="addAndCheckout(carViewData?._id, carViewData?.image, carViewData?.brand, carViewData?.model, carViewData?.colour, carViewData?.pricePerKM)">Book and Checkout</button>
+                                  <button type="button" class="btn btn-danger ml-2" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true" >Close</span>
+                                  </button>
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-rating" role="tabpanel" aria-labelledby="nav-rating-tab">
+                      <div class="mt-3" *ngIf="reviews?.length > 1">
+                          <p class="font-weight-bolder">Average Rating: {{carViewData?.rating}}</p>
+                          <p class="bolder"><span class="underline">REVIEWS</span></p>
+                          <div class="jumbotron" *ngFor="let review of reviews">
+                              <div class="font-weight-bold">{{review.displayName}} <small class="text-right">{{review.time | date: 'MMM d, y, h:mm:ss a'}}</small></div>
+                              <p class="font-weight-bold">{{review.oneWord}}</p>
+                              <p class="">{{review.review}}</p>
+                              <p>Rating: {{review.rating}}/5</p>
+                          </div>
+                      </div>
+                      <div class="mt-3" *ngIf="reviews?.length == 0">
+                              <p class="bolder">No Reviews Yet.</p>
+                      </div>
+                  </div>
+              </div> 
+      </div>
+  </div>
+  
+  </div> 
+</div>
+<div class="overlay" *ngIf="cartMessage">
+  <div class="cartMessage alert-success text-success text-center font-weight-bold p-3">{{cartMessage}}</div>
+</div>
+
+<div class="container" *ngIf="carData">
+  <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-10 mt-4" *ngFor="let car of carData">
+          <div class="container jumbotron">
+              <div class="row">
+                  <div class="col-12">
+                      <div class="row">
+                          <div class="col-5">
+                              <img src="{{car.image}}" class="img-responsive" alt="car image" width="100%">
+                              <p class="text-danger text-sm-center"><small>Price: &#8358;{{car.pricePerKM}}/KM</small></p>
+                          </div>
+                          <div class="col-7">
+                              <p class="font-weight-bold text-uppercase">{{car.brand}} {{car.model}}</p>
+                              <p class="text-capitalize">Colour: {{car.colour}}</p>
+                              <p>
+                                  <a data-toggle="modal" data-target="#viewModal" href="#">Rating: {{car.rating}}</a>
+                              </p>
+                          </div>
+                      </div>
+                      <div>
+                          <button class="btn btn-success btn-sm btn-block" data-toggle="modal" data-target="#viewModal" (click)="carView(car._id)"> View </button>
+                          <button type="button"  class="btn btn-danger btn-sm btn-block" (click)="addToCart(car._id, car.image, car.brand, car.model, car.colour, car.pricePerKM)">Add to Cart</button>
+                          <button [hidden]='true' id="viewBtn" data-toggle="modal" data-target="#viewModal"> View </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<app-footer></app-footer>

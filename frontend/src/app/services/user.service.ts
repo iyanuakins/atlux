@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,8 @@ export class UserService {
   url: String = "http://localhost:4000";
   cars: Object;
   newCartCount: Number;
-  CartItems = Number;
+  cartTryData = new BehaviorSubject<string>('0');
+  CartItems = this.cartTryData.asObservable();
   cartData: any;
   orderIsCompleted: Boolean;
   constructor(private http: HttpClient,
@@ -26,6 +27,18 @@ export class UserService {
     
   }
    
+  updateCartCount(count, update) {
+    if (update == "increase") {
+      let newValue = parseInt(this.cartTryData.value) + 1;
+      this.cartTryData.next(`${newValue}`);
+    } else if (update == "decrease") {
+      let newValue = parseInt(this.cartTryData.value) - 1;
+      this.cartTryData.next(`${newValue}`);
+    } else {
+      this.cartTryData.next(count);
+    }
+  }
+  
   updateProfile (firstName, lastName, phNum, address): Observable<any> {
 
     const user = {
@@ -98,7 +111,11 @@ export class UserService {
   }
 
   userGetCarTypes (): Observable<any> {
-    return this.http.get<any>(`${this.url}/user/car/getcartypes}`);
+    return this.http.get<any>(`${this.url}/user/car/getcartypes`);
+  }
+
+  getOrders (): Observable<any> {
+    return this.http.get<any>(`${this.url}/user/order/getorders/${this.loggedUser}`);
   }
 
 
@@ -109,6 +126,15 @@ export class UserService {
   makePayment (data): Observable<any> {
     return this.http.post<any>(`${this.url}/user/cart/payment`, data);
   }
+
+  transferCartItems (cartItems): Observable<any> {
+    let data = [
+      this.loggedUser,
+      cartItems
+    ]
+    return this.http.post<any>(`${this.url}/user/cart/transfer`, data);
+  }
+  
   // getDistance (latitude, longitude, deslatitude, deslongitude): Observable<any> {
   //   let apiKey = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
   //   return this.http.get(`http://maps.googleapis.com/maps/api/distancematrix/json?&origins=${latitude},-${longitude}&destination=${deslatitude},-${deslongitude}&mode=driving&key=${apiKey}`);

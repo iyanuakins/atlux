@@ -18,9 +18,13 @@
 
     <!-- Page Content Holder -->
     <div id="content">
-        <button type="button" class="navbar-btn btn-success mb-2" [class.active]='sidebar' (click)="sidebarActive()">
-            <span class="navbar-toggler-icon"></span>
-        </button> 
+            <div class="navi-btn" [class.active]='sidebar' (click)="sidebarActive()">
+                    <label for="navi-check" class="pointer">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                    </label>
+            </div> 
         <app-modal></app-modal>
         <div class="alert-success text-success text-center mb-2 p-3" *ngIf="message"><strong>{{message}}</strong></div>
     </div>

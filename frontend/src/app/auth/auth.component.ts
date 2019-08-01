@@ -20,6 +20,7 @@ export class AuthComponent implements OnInit {
   loginError: String;
   regError: String;
   logMessage: String;
+  message: String;
 
   constructor (private router: Router, private form: FormBuilder, private auth: AuthService) { 
     this.regGroup = this.form.group({
@@ -140,11 +141,18 @@ export class AuthComponent implements OnInit {
       this.router.navigate(['/user']);
     }
 
-    if (this.auth.loggedOut) {
+    if (this.auth.isLoggedOut) {
       this.logMessage = 'Logout Successful';
       setTimeout(() => {
         this.logMessage = '';
       }, 2000)
+    }
+
+    if (this.auth.isOrderLogin) {
+      this.message = 'Please login or register to complete your order';
+      setTimeout(() => {
+        this.message = '';
+      }, 10000)
     }
   }
 }

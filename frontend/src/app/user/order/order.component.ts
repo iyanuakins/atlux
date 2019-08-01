@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { $ } from 'protractor';
 
 @Component({
   selector: 'app-order',
@@ -40,15 +39,12 @@ export class OrderComponent implements OnInit {
     this.loader = true;
     let data = {
       username: this.userService.loggedUser,
-      carId
+      carId,
+      carPrice: 0
     }
     this.userService.addToCart(data).subscribe((res) => {
       if (res.success && res.status == 'new') {
-        this.userService.countCart().subscribe((res) => {
-          if (res.count >= 1) {
-            this.userService.newCartCount = res.count;
-          }
-        })
+        this.userService.updateCartCount('', 'increase');
         this.loader = false;
         this.cartMessage ='Successfully added to cart';
         setTimeout(() => {

@@ -161,6 +161,13 @@
 .card-body {
     border-bottom: #28a745 2px solid;
 }
+
+.navi-btn > label > span { 
+    display: block;
+    width: 35px;
+    height: 10px;
+    border-top: 3px solid #28a745;
+  }
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */

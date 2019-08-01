@@ -18,8 +18,10 @@
         <li class="nav-item ml-3 p-2">
             <a class="nav-link" [routerLink]="[ '/faq' ]" routerLinkActive="active"> FAQ </a>
         </li>
-        
-        <li class="nav-item ml-3 p-2">
+        <li class="nav-item ml-2 p-2">
+            <a class="nav-link" data-toggle="modal" data-target="#homeOrderModal"><button class="btn btn-outline-success"> PLACE ORDER </button></a>
+        </li>
+        <li class="nav-item ml-2 p-2">
             <a class="nav-link"><button class="btn btn-outline-success" (click) = "navigateToLogin()"> LOGIN </button></a>
         </li>
         <li class="nav-item ml-3 p-2">
@@ -28,3 +30,4 @@
     </ul>
   </div>
 </nav>
+<app-homemodal></app-homemodal>

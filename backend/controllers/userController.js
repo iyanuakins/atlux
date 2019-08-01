@@ -2,18 +2,26 @@ const Models = require('../models/Models');
 
 //to add cars to cart when placing order
 exports.addToCart = (req, res) => {
-    let newCart = new Models.Carts(req.body);
     Models.Carts.find({carId: req.body.carId, username: req.body.username })
         .then((carts) => {
             if (carts.length) {
                 return res.status(200).json({success: true, status: 'old'})
             } else {
-                newCart.save()
-                .then((cart) => {
-                    return res.status(200).json({success: true, status: 'new'})
+                Models.Cars.findById(req.body.carId)
+                .then((car) => {
+                    let newCart = new Models.Carts(req.body);
+                    newCart.carPrice = car.pricePerKM;
+                    newCart.save()
+                    .then((cart) => {
+                        return res.status(200).json({success: true, status: 'new'})
+                    }).catch((err) => {
+                        console.log(err);
+                        return res.status(200).json({success: false})
+                    });
+                    
                 }).catch((err) => {
                     console.log(err);
-                    return res.status(200).json({success: false})
+                    return res.status(200).json({success: false}) 
                 });
             }
         })
@@ -46,7 +54,7 @@ exports.getCarByBrand = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.json({error: err})
+            return res.status(200).json({error: err})
         });
 }
 
@@ -58,7 +66,7 @@ exports.getCarByType = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.json({error: err})
+            return res.status(200).json({error: err})
         });
 }
 
@@ -70,7 +78,7 @@ exports.removeItem = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.json({"success": false})
+            res.status(200).json({"success": false})
         });
 }
 
@@ -82,7 +90,7 @@ exports.getCarTypes = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.json({error: err})
+            return res.status(200).json({error: err})
         });
 }
 
@@ -94,7 +102,7 @@ exports.getCarBrands = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.json({error: err})
+            return res.status(200).json({error: err})
         });
 }
 
@@ -104,7 +112,7 @@ exports.getCar = (req, res) => {
             res.status(200).json(cars);
         }).catch((err) => {
             console.log(err);
-            req.json({error: err})
+            return res.status(200).json({error: err})
         });
 }
 
@@ -117,12 +125,12 @@ exports.viewCar = (req, res) => {
             })
             .catch((err) => {
                 console.log(err);
-                req.json({error: err})
+                return res.status(200).json({error: err})
             });
         })
         .catch((err) => {
             console.log(err);
-            req.json({error: err})
+            return res.status(200).json({error: err})
         });
 }
 
@@ -165,14 +173,14 @@ exports.getUserCart = (req, res) => {
                     })
                     .catch((err) => {
                         console.log(err);
-                        res.json({error: err})
+                        return res.status(200).json({error: err})
                     });
                 }))
             }
         })
         .catch((err) => {
             console.log(err);
-            res.json({error: err})
+            return res.status(200).json({error: err})
         });
 }
 
@@ -183,7 +191,7 @@ exports.countCart = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.json({error: err})
+            return res.status(200).json({success: false})
         });
 }
 
@@ -198,7 +206,7 @@ exports.addOrder = (req, res) => {
                     pickUpTime,
                     location,
                     destination,
-                    totalCost,
+                    KM,
                     username
                   } = req.body
                 
@@ -209,7 +217,7 @@ exports.addOrder = (req, res) => {
                         pickUpTime,
                         location,
                         destination,
-                        totalCost,
+                        totalCost: parseInt(item.carPrice) * parseInt(KM),
                         username,
                         carId: item.carId
                     }
@@ -222,7 +230,7 @@ exports.addOrder = (req, res) => {
                                 })
                                 .catch((err) => {
                                     console.log(err);
-                                    req.json({"success": false})
+                                    return res.status(200).json({success: false})
                                 });
                         }).catch((err) => {
                             console.log(err);
@@ -235,7 +243,7 @@ exports.addOrder = (req, res) => {
                         pickUpTime,
                         location,
                         destination,
-                        totalCost,
+                        totalCost: parseInt(item.carPrice) * parseInt(KM),
                         username,
                         carId: item.carId
                     }
@@ -247,7 +255,7 @@ exports.addOrder = (req, res) => {
                                 })
                                 .catch((err) => {
                                     console.log(err);
-                                    req.json({"success": false})
+                                    return res.status(200).json({success: false})
                                 });
                         }).catch((err) => {
                             console.log(err);
@@ -257,6 +265,48 @@ exports.addOrder = (req, res) => {
                 
             }))
         }).catch((err) => {
-        
+            console.log(err);
+            return res.status(200).json({success: false})
         });
+ }
+
+ exports.getOrders = (req, res) => {
+    Models.Orders.find({username: req.params.user})
+        .then((result) => {
+            if (result.length) {
+                res.status(200).json({"success": true, "available": true, "orders": result})
+            } else {
+                res.status(200).json({"success": true, "available": false})
+            }
+        }).catch((err) => {
+            console.log(err);
+            return res.status(200).json({success: false})
+        });
+ }
+
+ //To transfer cart items from local storage to DB
+exports.transferCartItems = (req, res) => { 
+    let cartItems = req.body[1];
+    if (cartItems.length > 1) {
+        cartItems.map((cartItem, index) => {
+            if ((cartItems.length - 1) === index) {
+                cartItem.username = req.body[0];
+                let newCartItem = new Models.Carts(cartItem);
+                newCartItem.save()
+                .then(() => {
+                    return res.status(200).json({success: true})
+                }).catch((err) => {
+                    console.log(err);
+                    return res.status(200).json({success: false})
+                });
+            } else {
+                cartItem.username = req.body[0];
+                let newCartItem = new Models.Carts(cartItem);
+                newCartItem.save()
+            }
+        });
+    }
+    
+    
+    
  }

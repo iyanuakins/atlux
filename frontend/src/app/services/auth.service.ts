@@ -12,7 +12,9 @@ export class AuthService {
 
   userid: String;
 
-  loggedOut: Boolean;
+  isLoggedOut: Boolean;
+
+  isOrderLogin: Boolean;
 
   constructor(private http: HttpClient,
               private router: Router) { }
@@ -69,7 +71,12 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.loggedOut = true;
+    this.isLoggedOut = true;
+    this.router.navigate(['/auth']);
+  }
+
+  orderLogin() {
+    this.isOrderLogin = true;
     this.router.navigate(['/auth']);
   }
   

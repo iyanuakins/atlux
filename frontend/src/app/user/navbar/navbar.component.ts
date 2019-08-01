@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NavbarComponent implements OnInit {
   loggedUser: String;
-  cartItems: Number;
+  cartItems: any;
   userCartItems: any;
   cartLength: Number;
 
@@ -36,10 +36,13 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.loggedUser = this.userService.loggedUser;
 
+    this.userService.CartItems.subscribe(cartItems => this.cartItems = cartItems);
     //this.cartItems = this.userService.cartItems;
     this.userService.countCart().subscribe((res) => {
-      if (res.count >= 1) {
-        this.cartItems = res.count;
+      if (res.count >= 1) { 
+        this.userService.updateCartCount(res.count, '')
+      } else {
+        this.userService.updateCartCount('0', '')
       }
     })
   }

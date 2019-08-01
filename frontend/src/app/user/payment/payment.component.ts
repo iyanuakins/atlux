@@ -35,13 +35,15 @@ export class PaymentComponent implements OnInit {
       pickUpTime,
       location,
       destination,
-      totalCost: this.totalCost,
+      KM: 10,
       username: this.userService.loggedUser
     }
 
     this.userService.makePayment(data).subscribe((res) => {
       if (res.success) {
         this.userService.orderIsCompleted = true;
+        localStorage.removeItem('checkoutData');
+        this.router.navigate(['user']);
       } else { 
         this.failedMessage = 'Something went wrong! Unable to complete order';
         setTimeout(() => {

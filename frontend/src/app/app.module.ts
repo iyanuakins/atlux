@@ -14,6 +14,7 @@ import { SliderComponent } from './slider/slider.component';
 import { DashboardComponent } from './user/dashboard/dashboard.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { OrderComponent } from './user/order/order.component';
+import { HomeOrderComponent } from './order/order.component';
 import { HistoryComponent } from './user/history/history.component';
 import { ReviewComponent } from './user/review/review.component';
 import { CartComponent } from './user/cart/cart.component';
@@ -29,8 +30,11 @@ import { AuthGuard } from './guards/auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { UserService } from './services/user.service';
 import { ModalComponent } from './user/modal/modal.component';
+import { HomeModalComponent } from './modal/modal.component';
 import { HomeService } from './services/home.service';
 import { PaymentComponent } from './user/payment/payment.component';
+import { HomecartComponent } from './homecart/homecart.component';
+import { CartbtnComponent } from './cartbtn/cartbtn.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +50,7 @@ import { PaymentComponent } from './user/payment/payment.component';
     DashboardComponent,
     ProfileComponent,
     OrderComponent,
+    HomeOrderComponent,
     HistoryComponent,
     ReviewComponent,
     CartComponent,
@@ -56,7 +61,10 @@ import { PaymentComponent } from './user/payment/payment.component';
     UseraboutComponent,
     UserfooterComponent,
     ModalComponent,
-    PaymentComponent
+    PaymentComponent,
+    HomeModalComponent,
+    HomecartComponent,
+    CartbtnComponent
   ],
   imports: [
     BrowserModule,

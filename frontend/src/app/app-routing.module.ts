@@ -16,13 +16,17 @@ import { UsercontactComponent } from './user/usercontact/usercontact.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CartComponent } from './user/cart/cart.component';
 import { PaymentComponent } from './user/payment/payment.component';
+import { HomeOrderComponent } from './order/order.component';
+import { HomecartComponent } from './homecart/homecart.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent },
   {path: "about", component: AboutComponent },
   {path: "faq", component: FaqComponent },
+  {path: "order", component: HomeOrderComponent },
   {path: "contact", component: ContactComponent },
   {path: "auth", component: AuthComponent },
+  {path: "cart", component: HomecartComponent },
   {path: "user", component: DashboardComponent, canActivate: [AuthGuard] },
   {path: "user/profile", component: ProfileComponent, canActivate: [AuthGuard] },
   {path: "user/order", component: OrderComponent, canActivate: [AuthGuard] },

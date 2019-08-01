@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-//import {} from 'googlemaps';
 
 @Component({
   selector: 'app-cart',
@@ -52,13 +51,17 @@ export class CartComponent implements OnInit {
             if (res.removedItem._id == item.cartId) {
               removedIndex = index;
             }
-          })
+          });
           this.cartItems.splice(removedIndex, 1);
           this.totalCost = this.cartItems.reduce((acc, item) => { 
             return acc += parseInt(item.carPrice)
-          }, 0)
+          }, 0);
+          if (this.totalCost == 0) {
+            this.cartItems = null;
+          }
+          this.userService.updateCartCount('', 'decrease');
         }
-      })
+      });
     }
   }
 
@@ -73,7 +76,7 @@ export class CartComponent implements OnInit {
       destination,
       location,
       distance : this.distance,
-      user: this.userService.loggedUser,
+      username: this.userService.loggedUser,
       totalCost: this.totalCost
     }
     localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
@@ -156,4 +159,3 @@ export class CartComponent implements OnInit {
   }
 
 }
-

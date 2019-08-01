@@ -11,7 +11,7 @@
               <a class="nav-link"><button class="btn btn-outline-success" (click) = "navigateToProfile()"> {{loggedUser}} </button></a>
           </li>
           <li class="nav-item ml-3 p-2">
-              <a class="nav-link"><button class="btn btn-success pl-3 pr-3" (click) = "navigateToCart()"> Cart <span class="badge badge-notify">{{cartItems || 0}}</span></button></a>
+              <a class="nav-link"><button class="btn btn-success pl-3 pr-3" (click) = "navigateToCart()"> Cart <span class="badge badge-notify">{{cartItems}}</span></button></a>
           </li>
           <li class="nav-item ml-3 p-2">
               <a class="nav-link"><button class="btn btn-danger" (click) = "logout()"> LogOut </button></a>

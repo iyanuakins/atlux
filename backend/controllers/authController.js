@@ -11,27 +11,27 @@ exports.register = (req, res) => {
        if (result) {
          return res.status(200).json({error: 'email'});
        } else {
-                Models.Users.findOne({username: newUser.username}).then((result) => {
-                    if (result) {
-                        return res.status(200).json({error: 'username'});
-                    } else {
-                            encrypt.hash(newUser.password, 12, (err, hash) => {
-                                if (err) {
-                                return res.status(200).json({error: 'Fail to Hash'});
-                                } else {
-                                    newUser.password = hash;
-                                    newUser.save()
-                                    .then(() => {
-                                        let payload = {subject: newUser._id};
-                                        let token = jwt.sign(payload, secKey);
-                                        return res.status(200).json({ message: "Successfully Registered", token: token, user: newUser.username });
-                                    })
-                                    .catch(err => res.status(200).json({error: 'saving failed'}));
-                                } 
-                                
-                            });
-                    }
-                }); 
+            Models.Users.findOne({username: newUser.username}).then((result) => {
+                if (result) {
+                    return res.status(200).json({error: 'username'});
+                } else {
+                    encrypt.hash(newUser.password, 12, (err, hash) => {
+                        if (err) {
+                        return res.status(200).json({error: 'Fail to Hash'});
+                        } else {
+                            newUser.password = hash;
+                            newUser.save()
+                            .then(() => {
+                                let payload = {subject: newUser._id};
+                                let token = jwt.sign(payload, secKey);
+                                return res.status(200).json({ message: "Successfully Registered", token: token, user: newUser.username });
+                            })
+                            .catch(err => res.status(200).json({error: 'saving failed'}));
+                        } 
+                        
+                    });
+                }
+            }); 
        }
    });
 

@@ -129,3 +129,17 @@
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 99998;
 }
+
+.btn .badge {
+  position: relative !important;
+  top: -0.8rem;
+  left: 0.9rem;
+  background: #ff0000;
+}
+
+.cart {
+  position: fixed !important;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1111;
+}

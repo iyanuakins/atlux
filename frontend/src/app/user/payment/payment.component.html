@@ -32,8 +32,7 @@
                 <table class="table table-striped table-light">
                     <thead class="table-dark">
                       <tr>
-                        <th scope="col">S/N</th>
-                        <th scope="col"></th>
+                        <th scope="col">#</th>
                         <th scope="col">Car</th>
                         <th scope="col">Colour</th>
                         <th scope="col">Price/KM (&#8358;)</th>
@@ -48,13 +47,13 @@
                         <td>{{cart.carPrice}}</td>
                       </tr>
                     </tbody>
-                  </table>
-                  <div *ngIf="checkoutData">
-                    <p><small>Pickup Date and Time: {{checkoutData.pickUpDate}} {{checkoutData.pickUpTime}}</small></p>
-                    <p><small>Pickup Location: {{checkoutData.location | uppercase}}</small></p>
-                    <p><small>Destination: {{checkoutData.destination | uppercase}}</small></p>
-                    <p><small>Total Amount: &#8358;{{totalCost}}</small></p>
-                  </div>
+                </table>
+                <div *ngIf="checkoutData">
+                  <p><small>Pickup Date and Time: {{checkoutData.pickUpDate}} {{checkoutData.pickUpTime}}</small></p>
+                  <p><small>Pickup Location: {{checkoutData.location | uppercase}}</small></p>
+                  <p><small>Destination: {{checkoutData.destination | uppercase}}</small></p>
+                  <p><small>Total Amount: &#8358;{{totalCost}}</small></p>
+                </div>
 
                   <div><button type="button" class="btn bg-success btn-outline-light btn-lg float-right" (click)="makePayment()"> Make Payment </button></div>
             </div>
