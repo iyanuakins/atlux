@@ -54,9 +54,9 @@ const UserSchema = new Schema({
         type: Number,
         default: 1
     },
-    cartId: {
-        type: String,
-        default: '0'
+    reviews: {
+        type: Number,
+        default: 0
     },
     details: DetailsSchema
     

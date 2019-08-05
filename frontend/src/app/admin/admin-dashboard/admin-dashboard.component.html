@@ -1,0 +1,33 @@
+<app-admin-navbar></app-admin-navbar>
+<div class="wrapper">
+        <!-- Sidebar Holder -->
+        <nav [class.active]='sidebar' id="sidebar">
+            <div class="sidebar">
+                <ul>
+                    <li><a [routerLink]="[ '/admin' ]" [routerLinkActiveOptions]= "{ exact: true }" routerLinkActive="actives"> Dashboard </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/orders' ]" routerLinkActive="actives"> Manage Orders </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/users' ]" routerLinkActive="actives"> Manage Users </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/drivers' ]" routerLinkActive="actives"> Manage Drivers </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/reviews' ]" routerLinkActive="actives"> Manage Reviews </a></li>
+                    <li><a [routerLink]="[ '/user/contact' ]" routerLinkActive="actives"> Contact </a></li>
+                    <li><a [routerLink]="[ '/user/about' ]" routerLinkActive="actives"> About </a></li>
+                    <li><a [routerLink]="[ '/user/faq' ]" routerLinkActive="actives"> FAQ </a></li>
+                </ul>
+            </div>
+        </nav>
+    
+        <!-- Page Content Holder -->
+        <div id="content">
+                <div class="navi-btn" [class.active]='sidebar' (click)="sidebarActive()">
+                    <label for="navi-check" class="pointer">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </label>
+                </div> 
+            <app-modal></app-modal>
+    
+            
+        </div>
+    </div>
+<app-userfooter></app-userfooter>

@@ -1,0 +1,17 @@
+.active{
+    border-bottom: 2px solid #28a745;
+    transition: all ease 0.5s;
+}
+
+.bolder{
+    font-size: 30px;
+    font-weight: bolder;
+    color: #28a745;
+}
+
+@media only screen and (max-width: 559px){
+    .nav>li {
+        display: inline-block;
+        margin: 0;
+    }
+}

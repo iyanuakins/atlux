@@ -50,4 +50,8 @@ export class HomeService {
   viewCar (carId): Observable<any> {
   return this.http.get<any>(`${this.url}/home/viewcar/${carId}`);
   }
+
+  getRandomCars() {
+    return this.http.get<any>(`${this.url}/home/car/getrandom`);
+  }
 }

@@ -12,6 +12,12 @@ export class DashboardComponent implements OnInit {
   sidebar: Boolean;
   message: String = '';
   loader: Boolean;
+  userRank: Number;
+  userType: String;
+  orders: Object;
+  completedOrders: Number;
+  pendingOrders: Number;
+  processedOrders: Number;
   constructor(private router: Router,
               private userService: UserService) { }
 
@@ -23,7 +29,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit() { 
+    this.userRank = this.userService.userRank;
+    this.userType = this.userService.userType;
     this.loader = true;
     if (this.userService.orderIsCompleted) {
       this.loader = false;
@@ -56,6 +64,48 @@ export class DashboardComponent implements OnInit {
         }
       });
     }
+
+    this.userService.getLastOrders()
+      .subscribe((res) => { 
+        if (res.success) {
+          if (res.available) {
+            this.orders = res.orders;
+          } else {
+            this.orders = [];
+          }
+          this.loader = false;
+        } else {
+          this.orders = [];
+          this.loader = false;
+        }
+      })
+
+    this.userService.getOrders()
+      .subscribe((res) => { 
+        if (res.success) {
+          if (res.available) { 
+            this.completedOrders = res.orders.filter((order) => {
+              return order.status === 'completed';
+            }).length;
+            this.pendingOrders = res.orders.filter((order) => {
+              return order.status === 'pending';
+            }).length;
+            this.processedOrders = res.orders.filter((order) => {
+              return order.status === 'processed';
+            }).length;
+          } else {
+          this.completedOrders = 0;
+          this.pendingOrders = 0;
+          this.processedOrders = 0;
+          }
+          this.loader = false;
+        } else {
+          this.completedOrders = 0;
+          this.pendingOrders = 0;
+          this.processedOrders = 0;
+          this.loader = false;
+        }
+      })
   }
 
 }

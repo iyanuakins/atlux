@@ -24,38 +24,43 @@ exports.register = (req, res) => {
                             .then(() => {
                                 let payload = {subject: newUser._id};
                                 let token = jwt.sign(payload, secKey);
-                                return res.status(200).json({ message: "Successfully Registered", token: token, user: newUser.username });
+                                return res.status(200).json({ message: "Successfully Registered", token: token, user: newUser });
                             })
-                            .catch(err => res.status(200).json({error: 'saving failed'}));
+                            .catch((err) => {
+                                console.log(err);
+                                return res.status(200).json({error: 'saving failed'})
+                            });
                         } 
                         
                     });
                 }
             }); 
        }
-   });
-
-   
-   
+   }); 
 }
 
 exports.login = (req, res) => {
     
     let userLogin = new Models.Users(req.body);
-    Models.Users.findOne({username: userLogin.username}).then((result) => {
-        if (result) {
-            encrypt.compare(userLogin.password, result.password, (err, match) => {
-            if (match) {
-                let payload = {subject: result._id};
-                let token = jwt.sign(payload, secKey);
-                res.status(200).json({ message: "Authenticated", token: token, user: userLogin.username });
-            } else
-                return res.status(200).json({error: 'failed'});
-            });
-        } else {
-           return res.status(200).json({ error: 'failed' });
-        }
-    });
+    Models.Users.findOne({username: userLogin.username})
+        .then((result) => {
+            if (result) {
+                encrypt.compare(userLogin.password, result.password, (err, match) => {
+                if (match) {
+                    let payload = {subject: result._id};
+                    let token = jwt.sign(payload, secKey);
+                    res.status(200).json({ message: "Authenticated", token: token, user: result });
+                } else
+                    return res.status(200).json({error: 'failed'});
+                });
+            } else {
+            return res.status(200).json({ error: 'failed' });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(200).json({error: 'failed'});
+        });
 }
 
 exports.checkEmail = (req, res) => {

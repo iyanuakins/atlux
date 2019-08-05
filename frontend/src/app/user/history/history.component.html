@@ -7,9 +7,9 @@
             <ul>
                 <li><a [routerLink]="[ '/user' ]" [routerLinkActiveOptions]= "{ exact: true }" routerLinkActive="actives"> Dashboard </a></li>
                 <li><a [routerLink]="[ '/user/profile' ]" routerLinkActive="actives"> Profile </a></li>
-                <li><a [routerLink]="[ '/user/order' ]" routerLinkActive="actives"> Order </a></li>
+                <li class="pointer"><a data-toggle="modal" data-target="#orderModal"> Order </a></li>
                 <li><a [routerLink]="[ '/user/history' ]" routerLinkActive="actives"> History </a></li>
-                <li><a [routerLink]="[ '/user/review' ]" routerLinkActive="actives"> Review </a></li>
+                <li><a [routerLink]="[ '/user/review' ]" routerLinkActive="actives"> Reviews </a></li>
                 <li><a [routerLink]="[ '/user/contact' ]" routerLinkActive="actives"> Contact </a></li>
                 <li><a [routerLink]="[ '/user/about' ]" routerLinkActive="actives"> About </a></li>
                 <li><a [routerLink]="[ '/user/faq' ]" routerLinkActive="actives"> FAQ </a></li>

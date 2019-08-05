@@ -12,6 +12,8 @@ export class HistoryComponent implements OnInit {
 
   sidebar: Boolean;
   orders: Object;
+  userRank: Number;
+  userType: String;
   constructor(private router: Router,
               private userService: UserService) { }
 
@@ -24,6 +26,8 @@ export class HistoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userRank = this.userService.userRank;
+    this.userType = this.userService.userType;
     this.userService.getOrders().subscribe((res) => { 
       if (res.success) {
         if (res.available) {

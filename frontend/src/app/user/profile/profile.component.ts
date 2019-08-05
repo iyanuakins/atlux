@@ -20,6 +20,8 @@ export class ProfileComponent implements OnInit {
   updateMessage: String;
   status: Boolean;
   noMatch: Boolean = false;
+  userRank: Number;
+  userType: String;
 
   constructor(private form: FormBuilder,
               private userService: UserService) { 
@@ -145,8 +147,10 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userRank = this.userService.userRank;
+    this.userType = this.userService.userType;
     this.loggedUser = this.userService.loggedUser;
-    this.userService.getUserDetails(this.loggedUser)
+    this.userService.getUserDetails()
       .subscribe( res => {
         this.userData = res[0];
       });

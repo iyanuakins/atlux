@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Event as NavigationEvent } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-auth',
@@ -22,7 +23,10 @@ export class AuthComponent implements OnInit {
   logMessage: String;
   message: String;
 
-  constructor (private router: Router, private form: FormBuilder, private auth: AuthService) { 
+  constructor (private router: Router,
+                private form: FormBuilder,
+                private auth: AuthService,
+                private userService: UserService) { 
     this.regGroup = this.form.group({
       username: ['', Validators.required],
       email: ['', [Validators.required,
@@ -71,8 +75,10 @@ export class AuthComponent implements OnInit {
         this.regError = 'Registration Failed';
       } else {
         localStorage.setItem('token', res.token);
-        localStorage.setItem('user', res.user);
-        this.router.navigate(['/user']);
+        localStorage.setItem('user', res.user.username);
+        localStorage.setItem('userType', res.user.userType);
+        localStorage.setItem('userRank', res.user.level);
+        this.userService.updateUser();
       }
     });
     
@@ -117,8 +123,10 @@ export class AuthComponent implements OnInit {
         this.loginError = 'Username or Password is incorrect';
       } else {
           localStorage.setItem('token', res.token);
-          localStorage.setItem('user', res.user);
-          this.router.navigate(['/user']);
+          localStorage.setItem('user', res.user.username);
+          localStorage.setItem('userType', res.user.userType);
+          localStorage.setItem('userRank', res.user.level);
+          this.userService.updateUser();
       }
     })
   }

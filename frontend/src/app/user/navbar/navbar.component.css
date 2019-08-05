@@ -9,11 +9,11 @@
     color: #28a745;
 }
 
-.badge-notify {
-    position: relative;
-    top: -1.12rem;
-    left: 1.38rem;
-    background: #ff0000;
+.badge-notifys {
+    position: relative !important;
+    top: -1.3rem;
+    left: 0.2rem;
+    background: #dc3545;
   }
 
 @media only screen and (max-width: 559px){

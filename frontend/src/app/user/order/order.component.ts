@@ -16,6 +16,8 @@ export class OrderComponent implements OnInit {
   reviews: Object;
   cartMessage: String;
   loader: Boolean = false;
+  userRank: Number;
+  userType: String;
   constructor(private router: Router,
               private userService: UserService) { }
 
@@ -84,7 +86,9 @@ export class OrderComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
+  ngOnInit() { 
+    this.userRank = this.userService.userRank;
+    this.userType = this.userService.userType;
     this.carData = this.userService.cars;
     if(!this.carData) {
      this.router.navigate(['/user'])

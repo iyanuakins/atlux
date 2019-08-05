@@ -270,6 +270,7 @@ exports.addOrder = (req, res) => {
         });
  }
 
+ //get user orders
  exports.getOrders = (req, res) => {
     Models.Orders.find({username: req.params.user})
         .then((result) => {
@@ -278,6 +279,33 @@ exports.addOrder = (req, res) => {
             } else {
                 res.status(200).json({"success": true, "available": false})
             }
+        }).catch((err) => {
+            console.log(err);
+            return res.status(200).json({success: false})
+        });
+ }
+
+ //get user last 5 orders
+ exports.getLastOrders = (req, res) => {
+    Models.Orders.find({username: req.params.user}).sort({ _id: -1 }).limit(5)
+        .then((result) => {
+            if (result.length) {
+                res.status(200).json({"success": true, "available": true, "orders": result})
+            } else {
+                res.status(200).json({"success": true, "available": false})
+            }
+        }).catch((err) => {
+            console.log(err);
+            return res.status(200).json({success: false})
+        });
+ }
+
+    //get user auth details
+ exports.getUserRank = (req, res) => {
+    Models.Users.findOne({username: req.params.user})
+        .then((result) => {
+            let {level, userType} = result;
+                res.status(200).json({"rank": level, "userType": userType});
         }).catch((err) => {
             console.log(err);
             return res.status(200).json({success: false})
@@ -306,7 +334,19 @@ exports.transferCartItems = (req, res) => {
             }
         });
     }
-    
-    
-    
- }
+}
+
+//Getting random cars for homepage
+exports.getRandomCars = (req, res) => {
+    Models.Cars.aggregate([{$sample: {size: 3}}])
+        .then((cars) => {
+            return res.status(200).json({"success": true, "cars": cars})
+        }).catch((err) => {
+            console.log(err);
+            return res.status(200).json({"success": false})
+        });
+}
+
+exports.validateUsers = (req, res) => {
+    return res.status(200).json({"status": true});
+}

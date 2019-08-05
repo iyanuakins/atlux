@@ -35,6 +35,13 @@ import { HomeService } from './services/home.service';
 import { PaymentComponent } from './user/payment/payment.component';
 import { HomecartComponent } from './homecart/homecart.component';
 import { CartbtnComponent } from './cartbtn/cartbtn.component';
+import { AdminCarsComponent } from './admin/admin-cars/admin-cars.component';
+import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
+import { AdminDriversComponent } from './admin/admin-drivers/admin-drivers.component';
+import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
+import { AdminReviewsComponent } from './admin/admin-reviews/admin-reviews.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { AdminNavbarComponent } from './admin/admin-navbar/admin-navbar.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +71,14 @@ import { CartbtnComponent } from './cartbtn/cartbtn.component';
     PaymentComponent,
     HomeModalComponent,
     HomecartComponent,
-    CartbtnComponent
+    CartbtnComponent,
+    AdminCarsComponent,
+    AdminOrdersComponent,
+    AdminDriversComponent,
+    AdminUsersComponent,
+    AdminReviewsComponent,
+    AdminDashboardComponent,
+    AdminNavbarComponent
   ],
   imports: [
     BrowserModule,

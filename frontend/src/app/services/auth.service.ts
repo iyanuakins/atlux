@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class AuthService {
   isOrderLogin: Boolean;
 
   constructor(private http: HttpClient,
-              private router: Router) { }
+              private router: Router,
+              private userService:UserService) { }
 
   newUser (firstName, lastName, phNum, password, email, username, address) {
 
@@ -71,7 +73,10 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    this.userService.loggedUser = '';
+    this.userService.userRank = null;
     this.isLoggedOut = true;
+    this.userService.userType = null;
     this.router.navigate(['/auth']);
   }
 

@@ -130,11 +130,12 @@
     z-index: 99998;
 }
 
-.btn .badge {
+.badge {
   position: relative !important;
-  top: -0.8rem;
-  left: 0.9rem;
-  background: #ff0000;
+    top: -1.3rem;
+    left: 0.1rem;
+    background: #dc3545;
+    color: #fff;
 }
 
 .cart {
@@ -142,4 +143,12 @@
   bottom: 1rem;
   right: 1rem;
   z-index: 1111;
+  background: rgba(168, 238, 171, 0.473);
+  padding: 17px;
+  border-radius: 36px;
+}
+
+.carts{
+  font-size: 25px;
+  color: #dc3545;
 }

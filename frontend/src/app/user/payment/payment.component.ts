@@ -16,6 +16,8 @@ export class PaymentComponent implements OnInit {
   checkoutData: Object;
   hasOrderFailed: Boolean;
   failedMessage: String = '';
+  userRank: Number;
+  userType: String;
   constructor(private userService: UserService,
               private router: Router) {}
 
@@ -55,6 +57,8 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit() {
     this.loader = true;
+    this.userRank = this.userService.userRank;
+    this.userType = this.userService.userType;
     this.userService.getUserCart().subscribe((res) => {
         if (res.success) {
           this.cartItems = res.cart;

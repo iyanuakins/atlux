@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-review',
@@ -10,7 +11,10 @@ import { Router } from '@angular/router';
 export class ReviewComponent implements OnInit {
 
   sidebar: boolean;
-  constructor(private router: Router) { }
+  userRank: Number;
+  userType: String;
+  constructor(private router: Router,
+              private userService: UserService) { }
 
   sidebarActive () {
     if (this.sidebar === true ) {
@@ -20,7 +24,9 @@ export class ReviewComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit() { 
+    this.userRank = this.userService.userRank;
+    this.userType = this.userService.userType;
   }
 
 }

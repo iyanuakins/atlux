@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,6 @@ export class NavbarComponent implements OnInit {
   userCartItems: any;
   cartLength: Number;
 
-  
   constructor(private router: Router,
               private auth: AuthService,
               private userService: UserService) { 
@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToCart () {
-      this.router.navigate(['user/cart'])
+      this.router.navigate(['/user/cart'])
   }
 
   logout () {
@@ -36,6 +36,19 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.loggedUser = this.userService.loggedUser;
 
+    this.userService.validateUsers()
+      .subscribe((res) => {
+        error => {
+          if (error instanceof HttpErrorResponse) {
+            if (error.status == 500) {
+              this.auth.logout();
+            }
+          }
+        }
+      
+    })
+
+
     this.userService.CartItems.subscribe(cartItems => this.cartItems = cartItems);
     //this.cartItems = this.userService.cartItems;
     this.userService.countCart().subscribe((res) => {
@@ -44,7 +57,7 @@ export class NavbarComponent implements OnInit {
       } else {
         this.userService.updateCartCount('0', '')
       }
-    })
+    });
   }
 
 }

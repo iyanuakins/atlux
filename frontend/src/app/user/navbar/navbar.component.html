@@ -7,14 +7,14 @@
     <div class="collapse navbar-collapse" id="atluxNav">
       <ul class="navbar-nav ml-auto ">
           
-          <li class="nav-item ml-3 p-2">
-              <a class="nav-link"><button class="btn btn-outline-success" (click) = "navigateToProfile()"> {{loggedUser}} </button></a>
+          <li class="nav-item p-2">
+              <a class="nav-link"><button class="btn text-success" (click) = "navigateToProfile()"><i class="fas fa-user"></i> {{loggedUser}} </button></a>
+          </li>
+          <li class="nav-item pt-3">
+              <a class="nav-link pointer" (click) = "navigateToCart()"> <i class="fas fa-shopping-cart carts"></i> <span class="badge text-white badge-notifys">{{cartItems}}</span></a>
           </li>
           <li class="nav-item ml-3 p-2">
-              <a class="nav-link"><button class="btn btn-success pl-3 pr-3" (click) = "navigateToCart()"> Cart <span class="badge badge-notify">{{cartItems}}</span></button></a>
-          </li>
-          <li class="nav-item ml-3 p-2">
-              <a class="nav-link"><button class="btn btn-danger" (click) = "logout()"> LogOut </button></a>
+              <a class="nav-link"><button class="btn btn-danger" (click) = "logout()"><i class="fa fa-power-off"></i> Logout </button></a>
           </li>
       </ul>
     </div>

@@ -15,18 +15,35 @@ export class UserService {
   CartItems = this.cartTryData.asObservable();
   cartData: any;
   orderIsCompleted: Boolean;
+  userRank: Number;
+  userType: String;
+
   constructor(private http: HttpClient,
               private router: Router) { 
-
-    if (this.loggedUser =='' && !!localStorage.getItem('user')){
-        this.loggedUser = localStorage.getItem('user')
-        //localStorage.removeItem('user')
-    } else {
-      router.navigate(['/auth'])
+    if ((this.loggedUser =='' && !!localStorage.getItem('user')) || (!this.userRank && !this.userType)){
+      this.loggedUser = localStorage.getItem('user');
+      this.userRank = parseInt(localStorage.getItem('userRank'));
+      this.userType = localStorage.getItem('userType');
+    } else if (!localStorage.getItem('user')){
+      this.router.navigate(['/auth'])
     }
-    
   }
    
+  validateUsers(): Observable<any> {
+    return this.http.get<any>(`${this.url}/user/validateusers`);
+}
+
+  updateUser() {
+    this.loggedUser = localStorage.getItem('user');
+    this.userRank = parseInt(localStorage.getItem('userRank'));
+    this.userType = localStorage.getItem('userType');
+    if (this.userType === 'client') {
+      this.router.navigate(['/user']);
+    } else if (this.userType === 'admin') {
+      this.router.navigate(['/admin']);
+    }
+  }
+
   updateCartCount(count, update) {
     if (update == "increase") {
       let newValue = parseInt(this.cartTryData.value) + 1;
@@ -39,8 +56,7 @@ export class UserService {
     }
   }
   
-  updateProfile (firstName, lastName, phNum, address): Observable<any> {
-
+  updateProfile (firstName, lastName, phNum, address): Observable<any> { 
     const user = {
         username: this.loggedUser,
         firstName,
@@ -48,24 +64,20 @@ export class UserService {
         address,
         phNum
       } 
-
-    return this.http.post<any>(`${this.url}/user/profile/edit`, user);
-      
+    return this.http.post<any>(`${this.url}/user/profile/edit`, user); 
   }
-  updatePassword (password, oldPassword): Observable<any> {
-
+  
+  updatePassword (password, oldPassword): Observable<any> { 
     const user = {
         username: this.loggedUser,
         password,
         oldPassword
-      } 
-
-    return this.http.post<any>(`${this.url}/user/profile/password`, user);
-      
+      }
+    return this.http.post<any>(`${this.url}/user/profile/password`, user);  
   }
 
-  getUserDetails (username): Observable<any> {
-       return this.http.get<any>(`${this.url}/user/profile/view/${username}`);
+  getUserDetails (): Observable<any> {
+       return this.http.get<any>(`${this.url}/user/profile/view/${this.loggedUser}`);
   }
 
   getCars (): Observable<any> {
@@ -118,6 +130,14 @@ export class UserService {
     return this.http.get<any>(`${this.url}/user/order/getorders/${this.loggedUser}`);
   }
 
+  getLastOrders (): Observable<any> {
+    return this.http.get<any>(`${this.url}/user/order/getlastorders/${this.loggedUser}`);
+  }
+
+  getUserRank (): Observable<any> {
+    return this.http.get<any>(`${this.url}/user/getrank/${this.loggedUser}`);
+  }
+
 
   checkout (data): Observable<any> {
     return this.http.post<any>(`${this.url}/user/cart/checkout`, data);
@@ -134,7 +154,7 @@ export class UserService {
     ]
     return this.http.post<any>(`${this.url}/user/cart/transfer`, data);
   }
-  
+
   // getDistance (latitude, longitude, deslatitude, deslongitude): Observable<any> {
   //   let apiKey = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk';
   //   return this.http.get(`http://maps.googleapis.com/maps/api/distancematrix/json?&origins=${latitude},-${longitude}&destination=${deslatitude},-${deslongitude}&mode=driving&key=${apiKey}`);

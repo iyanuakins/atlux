@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-usercontact',
@@ -12,7 +13,11 @@ export class UsercontactComponent implements OnInit {
 
   sidebar: boolean;
   contactGroup: FormGroup;
-  constructor(private router: Router, private form: FormBuilder) { 
+  userRank: Number;
+  userType: String;
+  constructor(private router: Router,
+              private form: FormBuilder,
+              private userService: UserService) { 
 
     this.contactGroup = this.form.group({
       email: ['', [Validators.required,
@@ -36,7 +41,9 @@ export class UsercontactComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit() { 
+    this.userRank = this.userService.userRank;
+    this.userType = this.userService.userType;
   }
 
 }

@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/user');
 const homeRoutes = require('./routes/home');
 const jwt = require('jsonwebtoken');
@@ -48,7 +49,8 @@ app.get('', (req, res) => {
 
 app.use('/auth', authRoutes);
 app.use('/home', homeRoutes);
-app.use('/user', userRoutes);
+app.use('/user', verifyToken, userRoutes);
+app.use('/admin', verifyToken, adminRoutes);
 
 app.listen(PORT, (req, res) => {
     console.log(`Server listening on port ${PORT}...`)
