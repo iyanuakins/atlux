@@ -183,7 +183,7 @@ exports.getCarsCount = (req, res) => {
             if (result.length) {
                 res.status(200).json({"success": true, "totalCars": result.length})
             } else {
-                res.status(200).json({"success": true, "totalUsers": 0})
+                res.status(200).json({"success": true, "totalCars": 0})
             }
         })
         .catch((err) => {

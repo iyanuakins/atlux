@@ -204,4 +204,8 @@
         text-align: center;
     }
 
+    .scroll-x {
+        overflow-x: scroll;
+    }
+
 }

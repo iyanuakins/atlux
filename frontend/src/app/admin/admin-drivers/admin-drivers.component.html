@@ -1,3 +1,148 @@
-<p>
-  admin-drivers works!
-</p>
+<app-admin-navbar></app-admin-navbar>
+<div class="wrapper">
+        <!-- Sidebar Holder -->
+        <nav [class.active]='sidebar' id="sidebar">
+            <div class="sidebar">
+                <ul>
+                    <li><a [routerLink]="[ '/admin' ]" [routerLinkActiveOptions]= "{ exact: true }" routerLinkActive="actives"> Dashboard </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/orders' ]" routerLinkActive="actives"> Manage Orders </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/users' ]" routerLinkActive="actives"> Manage Users </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/drivers' ]" routerLinkActive="actives"> Manage Drivers </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/reviews' ]" routerLinkActive="actives"> Manage Reviews </a></li>
+                    <li><a [routerLink]="[ '/user/contact' ]" routerLinkActive="actives"> Contact </a></li>
+                    <li><a [routerLink]="[ '/user/about' ]" routerLinkActive="actives"> About </a></li>
+                    <li><a [routerLink]="[ '/user/faq' ]" routerLinkActive="actives"> FAQ </a></li>
+                </ul>
+            </div>
+        </nav>
+    
+        <!-- Page Content Holder -->
+        <div id="content">
+          <div class="navi-btn" [class.active]='sidebar' (click)="sidebarActive()">
+              <label for="navi-check" class="pointer">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+              </label>
+          </div>
+          <div class="loader-overlay" *ngIf="loader">
+              <img src="./../../../assets/img/loader.gif" alt="" class="loader">
+          </div>
+    
+           <div class="container">
+             <div class="row">
+               <div class="col-md-10 col-lg-10-col-sm-12 offset-1">
+                  <form action="" [formGroup]="driverGroup" class="p-4">
+                      <h1 class="text-center mb-3">Add new driver</h1>
+            <div class="alert-danger text-danger text-center mb-2 p-3" *ngIf="regError">{{regError}}</div>
+              <div class="form-group">
+                <div class="input-group">
+                  <label for="firstName" class="sr-only">Firstname</label>
+                  <div class="input-group-prepend">
+                      <div class="input-group-text">Firstname</div>
+                  </div>
+                  <input type="text" class="form-control" [class.is-invalid] ="driverGroup.controls.firstName.touched && driverGroup.controls.firstName.errors" formControlName="firstName" id="firstName" placeholder="First Name">
+                </div>
+                <div class="alert-danger text-danger mt-1" *ngIf="driverGroup.controls.firstName.touched && driverGroup.controls.firstName.errors">
+                  <small [hidden]="!driverGroup.controls.firstName.errors.required">Field is required </small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="input-group">
+                  <label for="lastName" class="sr-only">Lastname</label>
+                  <div class="input-group-prepend">
+                      <div class="input-group-text">Lastname</div>
+                  </div>
+                  <input type="text" class="form-control" [class.is-invalid] ="driverGroup.controls.lastName.touched && driverGroup.controls.lastName.errors" formControlName="lastName" id="lastName" placeholder="Last Name">
+                </div>
+                  <div class="alert-danger text-danger mt-1" *ngIf="driverGroup.controls.lastName.touched && driverGroup.controls.lastName.errors">
+                    <small [hidden]="!driverGroup.controls.lastName.errors.required">Field is required </small>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                <div class="input-group">
+                  <label for="email" class="sr-only">Email</label>
+                  <div class="input-group-prepend">
+                      <div class="input-group-text">Email</div>
+                  </div>
+                  <input type="email" class="form-control" [class.is-invalid] ="(driverGroup.controls.email.touched && driverGroup.controls.email.errors) || emailTaken" (blur)='checkEmail()' formControlName="email" id="email" placeholder="johndoe@example.com">
+                </div>
+                <div class="alert-danger text-danger mt-1" *ngIf="driverGroup.controls.email.touched && driverGroup.controls.email.errors">
+                  <small [hidden]="!driverGroup.controls.email.errors.required">Field is required </small>
+                  <small [hidden]="!driverGroup.controls.email.errors.email">Enter valid email </small>
+                </div>
+                <div class="alert-danger text-danger mt-1" *ngIf="emailTaken">
+                  <small>Email already in use</small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="input-group">
+                    <label for="username" class="sr-only">Username</label>
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Username</div>
+                    </div>
+                      <input type="text" class="form-control" [class.is-invalid] ="(driverGroup.controls.username.touched && driverGroup.controls.username.errors) || usernameTaken" (blur)='checkUsername()' formControlName="username" id="Username" placeholder="username">
+                  </div>
+                  <div class="alert-danger text-danger mt-1" *ngIf="driverGroup.controls.username.touched && driverGroup.controls.username.errors">
+                    <small [hidden]="!driverGroup.controls.username.errors.required">Field is required </small>
+                  </div>
+                  <div class="alert-danger text-danger mt-1" *ngIf="usernameTaken">
+                    <small>Username already in use</small>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                      <label for="password" class="sr-only">Password</label>
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">Password</div>
+                      </div>
+                        <input type="password" class="form-control" [class.is-invalid] ="driverGroup.controls.password.touched && driverGroup.controls.password.errors" formControlName="password" id="Password" placeholder="***********">
+                    </div>
+                    <div class="alert-danger text-danger mt-1" *ngIf="driverGroup.controls.password.touched && driverGroup.controls.password.errors">
+                      <small [hidden]="!driverGroup.controls.password.errors.required">Field is required </small>
+                      <small [hidden]="!driverGroup.controls.password.errors.minlength"> Password must be between 6-32 characters</small> 
+                      <small [hidden]="!driverGroup.controls.password.errors.maxlength"> Password must be between 6-32 characters</small> 
+                    </div>
+                  </div>
+                
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label for="phNum" class="sr-only">Phone Number</label>
+                      <div class="input-group-prepend">
+                          <div class="input-group-text">Phone Number</div>
+                      </div>
+                        <input type="tel" class="form-control" [class.is-invalid] ="driverGroup.controls.phNum.touched && driverGroup.controls.phNum.errors" formControlName="phNum" id="phNum" placeholder="08030000000">
+                    </div>
+                    <div class="alert-danger text-danger mt-1" *ngIf="driverGroup.controls.phNum.touched && driverGroup.controls.phNum.errors">
+                      <small [hidden]="!driverGroup.controls.phNum.errors.required">Field is required</small>
+                      <small [hidden]="!driverGroup.controls.phNum.errors.pattern">Enter valid phone number</small>
+                    </div>
+                  </div>
+
+                    <div class="form-group">
+                      <div class="input-group">
+                        <label for="address" class="sr-only">Address</label>
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Address</div>
+                        </div>
+                          <textarea class="form-control" [class.is-invalid] ="driverGroup.controls.address.touched && driverGroup.controls.address.errors" formControlName="address" id="address" placeholder="Address"></textarea>
+                      </div>
+                      <div class="alert-danger text-danger mt-1" *ngIf="driverGroup.controls.address.touched && driverGroup.controls.address.errors">
+                        <small [hidden]="!driverGroup.controls.address.errors.required">Field is required</small>
+                      </div>
+                    </div>
+            
+                      <div class="form-group">
+                        <button type="button" class="btn btn-success float-right" [disabled]="!driverGroup.valid" (click)="doRegister()">Register</button>
+                      </div>
+                    </form>
+               </div>
+             </div>
+           </div> 
+        </div>
+    </div>
+<app-userfooter></app-userfooter>

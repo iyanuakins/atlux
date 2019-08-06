@@ -42,6 +42,7 @@ import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminReviewsComponent } from './admin/admin-reviews/admin-reviews.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 import { AdminNavbarComponent } from './admin/admin-navbar/admin-navbar.component';
+import { AdminService } from './services/admin.service';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { AdminNavbarComponent } from './admin/admin-navbar/admin-navbar.componen
       multi: true
     },
     UserService,
-    HomeService
+    HomeService,
+    AdminService
   ],
   bootstrap: [AppComponent]
 })

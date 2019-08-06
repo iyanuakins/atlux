@@ -70,17 +70,18 @@ export class AuthComponent implements OnInit {
     let password = this.regGroup.value.password;
     let address = this.regGroup.value.address;
     let username = this.regGroup.value.username;
-    this.auth.newUser(firstName, lastName, phNum, password, email, username, address).subscribe((res) => {
-      if (res.error) {
-        this.regError = 'Registration Failed';
-      } else {
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('user', res.user.username);
-        localStorage.setItem('userType', res.user.userType);
-        localStorage.setItem('userRank', res.user.level);
-        this.userService.updateUser();
-      }
-    });
+    this.auth.newUser(firstName, lastName, phNum, password, email, username, address)
+      .subscribe((res) => {
+        if (res.error) {
+          this.regError = 'Registration Failed';
+        } else {
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('user', res.user.username);
+          localStorage.setItem('userType', res.user.userType);
+          localStorage.setItem('userRank', res.user.level);
+          this.userService.updateUser();
+        }
+      });
     
   }
 
