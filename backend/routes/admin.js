@@ -5,6 +5,8 @@ const user = require('../controllers/user');
 
 
 //Admin Car Management Routes
+router.post('/addtype', admin.addType);
+router.post('/addbrand', admin.addBrand);
 router.post('/addcar', admin.addCar);
 router.get('/removecar/:carId', admin.removeCar);
 router.post('/addcarbrand', admin.addCarBrand);
@@ -14,6 +16,7 @@ router.post('/removecartype', admin.removeCarType);
 router.get('/getallcars', admin.getAllCars);
 router.get('/getthiscar/:carId', admin.getThisCar);
 router.get('/getcarcount', admin.getCarsCount);
+router.get('/checkdb', admin.checkDB);
 
 
 //Admin driver management Routes
@@ -36,5 +39,6 @@ router.get('/getthisuser/:id', admin.getThisUser);
 router.get('/getallusers', admin.getAllUsers);
 router.get('/getlastusers', admin.getLastUsers);
 router.get('/getusercount', admin.getUsersCount);
+router.post('/suspenduser', admin.suspendUser);
 
 module.exports = router;

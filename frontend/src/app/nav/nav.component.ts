@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-//import { EventEmitter } from 'events';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
   
-  constructor(private router: Router) { 
+  constructor(private router: Router, private toastr: ToastrService) { 
   }
 
   

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +25,8 @@ export class ProfileComponent implements OnInit {
   userType: String;
 
   constructor(private form: FormBuilder,
-              private userService: UserService) { 
+              private userService: UserService,
+              private toastr: ToastrService) { 
     this.updateGroup = this.form.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -52,24 +54,6 @@ export class ProfileComponent implements OnInit {
     
   }
 
-  passwordActive () {
-    this.changePassword = true;
-    this.updateProfile = false;
-    this.profilePage = false;
-  }
-
-  updateActive () {
-    this.changePassword = false;
-    this.updateProfile = true;
-    this.profilePage = false;
-  }
-
-  profileActive () {
-    this.changePassword = false;
-    this.updateProfile = false;
-    this.profilePage = true;
-  }
-
   sidebarActive () {
     if (this.sidebar === true ) {
       this.sidebar = false;
@@ -86,27 +70,33 @@ export class ProfileComponent implements OnInit {
       this.userService.updatePassword(password, oldPassword)
         .subscribe((res) => {
           if(!res.success){
-            this.updateMessage = 'Password update failed'
-            this.status = false
-            setTimeout(() => {
-              this.updateMessage = ''
-            },5000)
+            this.toastr.error('Password update failed', 'Failed', {
+              timeOut: 3000,
+              closeButton: true,
+              progressBar: true,
+              progressAnimation: 'decreasing',
+              easing: 'ease-in'
+            });
           } else {
-            this.updateMessage = 'Password update successful'
-            this.status = true
+            this.toastr.success('Password update successful', 'success', {
+              timeOut: 3000,
+              closeButton: true,
+              progressBar: true,
+              progressAnimation: 'decreasing',
+              easing: 'ease-in'
+            });
             this.passwordGroup.reset();
-            setTimeout(() => {
-              this.updateMessage = ''
-            },5000)
           }
         }
         )
     } else {
-      this.updateMessage = 'Password update failed'
-      this.status = false
-      setTimeout(() => {
-        this.updateMessage = ''
-      },5000)
+      this.toastr.error('Password update failed', 'Failed', {
+        timeOut: 3000,
+        closeButton: true,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        easing: 'ease-in'
+      });
     }
   }
 
@@ -129,19 +119,23 @@ export class ProfileComponent implements OnInit {
     this.userService.updateProfile(firstName, lastName, phNum, address)
       .subscribe((res) => {
         if(!res.success){
-          this.updateMessage = 'Profile update failed'
-          this.status = false
-          setTimeout(() => {
-            this.updateMessage = ''
-          },5000)
+          this.toastr.error('Password update failed', 'Failed', {
+            timeOut: 3000,
+            closeButton: true,
+            progressBar: true,
+            progressAnimation: 'decreasing',
+            easing: 'ease-in'
+          });
         } else {
-          this.updateMessage = 'Profile update successful'
-          this.status = true
+          this.toastr.success('Profile update successful', 'Success', {
+            timeOut: 3000,
+            closeButton: true,
+            progressBar: true,
+            progressAnimation: 'decreasing',
+            easing: 'ease-in'
+          });
           this.updateGroup.reset();
           this.userData = res.userData;
-          setTimeout(() => {
-            this.updateMessage = ''
-          },5000)
         }
       })
   }

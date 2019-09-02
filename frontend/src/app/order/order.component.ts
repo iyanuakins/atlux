@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../services/home.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-homeorder',
@@ -15,8 +16,10 @@ export class HomeOrderComponent implements OnInit {
   reviews: Object;
   cartMessage: String;
   loader: Boolean = false;
+  p: Number = 1;
   constructor(private router: Router,
-              private homeService: HomeService) { }
+              private homeService: HomeService,
+              private toastr: ToastrService) { }
 
   carView(carId) {
     this.homeService.viewCar(carId).subscribe((res) => {
@@ -42,11 +45,14 @@ export class HomeOrderComponent implements OnInit {
       cartItems.push(data);
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       this.loader = false;
-      this.cartMessage ='Successfully added to cart';
+      this.toastr.success('Successfully added to cart', 'Success', {
+        timeOut: 3000,
+        closeButton: true,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        easing: 'ease-in'
+      });
       this.homeService.updateCartCount('', 'increase');
-      setTimeout(() => {
-        this.cartMessage=''
-      }, 1000);
     } else {
       cartItems = JSON.parse(localStorage.getItem('cartItems'));
       let exist = cartItems.find((item) => {
@@ -54,19 +60,25 @@ export class HomeOrderComponent implements OnInit {
       })
       if (exist) {
         this.loader = false;
-        this.cartMessage ='Car previously added to cart';
-        setTimeout(() => {
-          this.cartMessage=''
-        }, 1000);
+        this.toastr.success('Car previously added to cart', 'Ouch!', {
+          timeOut: 3000,
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          easing: 'ease-in'
+        });
       } else {
         cartItems.push(data)
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
         this.loader = false;
-      this.cartMessage ='Successfully added to cart';
+        this.toastr.success('Successfully added to cart', 'Success', {
+          timeOut: 3000,
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          easing: 'ease-in'
+        });
       this.homeService.updateCartCount('', 'increase');
-      setTimeout(() => {
-        this.cartMessage=''
-      }, 1000);
       }
       
     }

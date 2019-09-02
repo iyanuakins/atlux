@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-payment',
@@ -19,7 +20,8 @@ export class PaymentComponent implements OnInit {
   userRank: Number;
   userType: String;
   constructor(private userService: UserService,
-              private router: Router) {}
+              private router: Router,
+              private toastr: ToastrService) {}
 
   sidebarActive () {
     if (this.sidebar === true ) {
@@ -47,10 +49,13 @@ export class PaymentComponent implements OnInit {
         localStorage.removeItem('checkoutData');
         this.router.navigate(['user']);
       } else { 
-        this.failedMessage = 'Something went wrong! Unable to complete order';
-        setTimeout(() => {
-          this.failedMessage = '';
-        }, 2000);
+        this.toastr.error('Something went wrong! Unable to complete order', 'Failed', {
+          timeOut: 3000,
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          easing: 'ease-in'
+        });
       }
     })
   }

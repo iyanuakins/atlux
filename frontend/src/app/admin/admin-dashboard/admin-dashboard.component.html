@@ -5,9 +5,10 @@
             <div class="sidebar">
                 <ul>
                     <li><a [routerLink]="[ '/admin' ]" [routerLinkActiveOptions]= "{ exact: true }" routerLinkActive="actives"> Dashboard </a></li>
-                    <li><a [routerLink]="[ '/admin/manage/orders' ]" routerLinkActive="actives"> Manage Orders </a></li>
                     <li><a [routerLink]="[ '/admin/manage/users' ]" routerLinkActive="actives"> Manage Users </a></li>
                     <li><a [routerLink]="[ '/admin/manage/drivers' ]" routerLinkActive="actives"> Manage Drivers </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/orders' ]" routerLinkActive="actives"> Manage Orders </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/cars' ]" routerLinkActive="actives"> Manage Cars </a></li>
                     <li><a [routerLink]="[ '/admin/manage/reviews' ]" routerLinkActive="actives"> Manage Reviews </a></li>
                     <li><a [routerLink]="[ '/user/contact' ]" routerLinkActive="actives"> Contact </a></li>
                     <li><a [routerLink]="[ '/user/about' ]" routerLinkActive="actives"> About </a></li>
@@ -64,10 +65,10 @@
                     </div>
                     <div class="container mt-5">
                         <div class="row">
-                          <div class="col-md-12" *ngIf="!orders">
-                              <p class="bolder text-center">Your order history is empty</p>
+                          <div class="col-md-12" *ngIf="!orders?.length">
+                              <p class="bolder text-center">No order Available in the system</p>
                           </div>
-                          <div class="col-md-12 scroll-x" *ngIf="orders">
+                          <div class="col-md-12 scroll-x" *ngIf="orders?.length">
                               <p class="bolder text-center"><span class="underline">Last 5 Orders Placed</span></p>
                               <table class="table table-striped table-light">
                                   <thead class="table-dark">
@@ -103,7 +104,10 @@
 
                     <div class="container mt-5">
                         <div class="row">
-                          <div class="col-md-12 scroll-x" *ngIf="users">
+                            <div class="col-md-12" *ngIf="!users?.length">
+                                <p class="bolder text-center">No user Available in the system</p>
+                            </div>
+                          <div class="col-md-12 scroll-x" *ngIf="users?.length">
                               <p class="bolder text-center"><span class="underline">Last 5 registered users</span></p>
                               <table class="table table-striped table-light">
                                   <thead class="table-dark">

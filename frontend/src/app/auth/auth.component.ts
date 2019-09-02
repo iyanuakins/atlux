@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { filter} from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Router, NavigationEnd } from '@angular/router';
 import { Event as NavigationEvent } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -26,7 +27,8 @@ export class AuthComponent implements OnInit {
   constructor (private router: Router,
                 private form: FormBuilder,
                 private auth: AuthService,
-                private userService: UserService) { 
+                private userService: UserService,
+                private toastr: ToastrService) { 
     this.regGroup = this.form.group({
       username: ['', Validators.required],
       email: ['', [Validators.required,
@@ -73,7 +75,13 @@ export class AuthComponent implements OnInit {
     this.auth.newUser(firstName, lastName, phNum, password, email, username, address)
       .subscribe((res) => {
         if (res.error) {
-          this.regError = 'Registration Failed';
+          this.toastr.error('Registration Failed', 'Ouch!', {
+            timeOut: 5000,
+            closeButton: true,
+            progressBar: true,
+            progressAnimation: 'decreasing',
+            easing: 'ease-in'
+          });
         } else {
           localStorage.setItem('token', res.token);
           localStorage.setItem('user', res.user.username);
@@ -121,7 +129,14 @@ export class AuthComponent implements OnInit {
 
     this.auth.userLogin(username, password).subscribe((res) => {
       if (res.error) {
-        this.loginError = 'Username or Password is incorrect';
+        this.toastr.error('Username or Password is incorrect', 'Login Failed', {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        easing: 'ease-in'
+      });
+        this.loginError = '';
       } else {
           localStorage.setItem('token', res.token);
           localStorage.setItem('user', res.user.username);
@@ -147,21 +162,27 @@ export class AuthComponent implements OnInit {
     });
 
     if(!!localStorage.getItem('token') && !!localStorage.getItem('user')){
-      this.router.navigate(['/user']);
+      this.userService.updateUser();
     }
 
     if (this.auth.isLoggedOut) {
-      this.logMessage = 'Logout Successful';
-      setTimeout(() => {
-        this.logMessage = '';
-      }, 2000)
+      this.toastr.success('Logout Successful', 'Logged Out', {
+        timeOut: 3000,
+        closeButton: true,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        easing: 'ease-in'
+      });
     }
 
     if (this.auth.isOrderLogin) {
-      this.message = 'Please login or register to complete your order';
-      setTimeout(() => {
-        this.message = '';
-      }, 10000)
+      this.toastr.info('Please login or register to complete your order', 'Authentication required', {
+        timeOut: 10000,
+        closeButton: true,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        easing: 'ease-in'
+      });
     }
   }
 }

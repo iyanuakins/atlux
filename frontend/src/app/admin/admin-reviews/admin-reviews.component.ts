@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-admin-reviews',
@@ -7,7 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminReviewsComponent implements OnInit {
 
-  constructor() { }
+  sidebar: Boolean;
+  loader: Boolean;
+  drivers: Object;
+  constructor(private adminService: AdminService) { }
+
+
+  sidebarActive () {
+    if (this.sidebar === true ) {
+      this.sidebar = false;
+    } else {
+      this.sidebar = true;
+    }
+  }
 
   ngOnInit() {
   }

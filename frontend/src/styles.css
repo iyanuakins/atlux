@@ -152,3 +152,9 @@
   font-size: 25px;
   color: #dc3545;
 }
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #28a745 #28a745 #fff;
+}

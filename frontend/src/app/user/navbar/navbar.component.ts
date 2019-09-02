@@ -50,7 +50,6 @@ export class NavbarComponent implements OnInit {
 
 
     this.userService.CartItems.subscribe(cartItems => this.cartItems = cartItems);
-    //this.cartItems = this.userService.cartItems;
     this.userService.countCart().subscribe((res) => {
       if (res.count >= 1) { 
         this.userService.updateCartCount(res.count, '')

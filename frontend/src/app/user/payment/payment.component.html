@@ -43,7 +43,7 @@
                       </tr>
                     </thead>
                     <tbody >
-                      <tr *ngFor="let cart of cartItems; let i = index">
+                      <tr *ngFor="let cart of cartItems | paginate: { itemsPerPage: 5, currentPage: p, totalItems: cartItems.length }; let i = index">
                         <td>{{i + 1}}</td>
                         <td><img src="./../../{{cart.carImage}}" alt="car image" width="120px" height="40px"></td>
                         <td>{{cart.carBrand}} {{cart.carModel}}</td>
@@ -52,14 +52,19 @@
                       </tr>
                     </tbody>
                 </table>
+                <div class="text-right">
+                    <pagination-controls (pageChange)="p = $event"
+                                        maxSize="5"
+                                        responsive="true"
+                                        autoHide="true"></pagination-controls>
+                </div>
                 <div *ngIf="checkoutData">
                   <p><small>Pickup Date and Time: {{checkoutData.pickUpDate}} {{checkoutData.pickUpTime}}</small></p>
                   <p><small>Pickup Location: {{checkoutData.location | uppercase}}</small></p>
                   <p><small>Destination: {{checkoutData.destination | uppercase}}</small></p>
                   <p><small>Total Amount: &#8358;{{totalCost}}</small></p>
                 </div>
-
-                  <div><button type="button" class="btn bg-success btn-outline-light btn-lg float-right" (click)="makePayment()"> Make Payment </button></div>
+                <div><button type="button" class="btn bg-success btn-outline-light btn-lg float-right" (click)="makePayment()"> Make Payment </button></div>
             </div>
           </div>
         </div>

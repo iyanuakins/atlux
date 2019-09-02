@@ -1,15 +1,15 @@
-const Models = require('../models/Models');
+const { Cars, Carts, Brands, Orders, CarTypes, Reviews, Users } = require('../models/Models');
 
 //to add cars to cart when placing order
 exports.addToCart = (req, res) => {
-    Models.Carts.find({carId: req.body.carId, username: req.body.username })
+    Carts.find({carId: req.body.carId, username: req.body.username })
         .then((carts) => {
             if (carts.length) {
                 return res.status(200).json({success: true, status: 'old'})
             } else {
-                Models.Cars.findById(req.body.carId)
+                Cars.findById(req.body.carId)
                 .then((car) => {
-                    let newCart = new Models.Carts(req.body);
+                    let newCart = new Carts(req.body);
                     newCart.carPrice = car.pricePerKM;
                     newCart.save()
                     .then((cart) => {
@@ -35,7 +35,7 @@ exports.addToCart = (req, res) => {
 
  //To add review for order
 exports.addReview = (req, res) => {
-    let newReview = new Models.Reviews(req.body);
+    let newReview = new Reviews(req.body);
     newReview.save()
         .then(() => {
             return res.status(200).json({success: true})
@@ -48,7 +48,7 @@ exports.addReview = (req, res) => {
 
  //Fectch cars by brand for display on order page
 exports.getCarByBrand = (req, res) => {
-    Models.Cars.find({brand: req.params.brand })
+    Cars.find({brand: req.params.brand })
         .then((cars) => {
             res.status(200).json(cars);
         })
@@ -60,7 +60,7 @@ exports.getCarByBrand = (req, res) => {
 
 //Fectch cars by types for display on order page
 exports.getCarByType = (req, res) => {
-    Models.Cars.find({type: req.params.type })
+    Cars.find({type: req.params.type })
         .then((cars) => {
             res.status(200).json(cars);
         })
@@ -72,7 +72,7 @@ exports.getCarByType = (req, res) => {
 
 //Remove Cart Item
 exports.removeItem = (req, res) => {
-    Models.Carts.findByIdAndDelete(req.params.cartId)
+    Carts.findByIdAndDelete(req.params.cartId)
         .then((cartItem) => {
             res.status(200).json({"success": true, "removedItem": cartItem});
         })
@@ -83,7 +83,7 @@ exports.removeItem = (req, res) => {
 }
 
 exports.getCarTypes = (req, res) => {
-    Models.CarTypes.findOne({})
+    CarTypes.findOne({})
         .then((result) => {
             let types = result.cartype;
             res.status(200).json(types);
@@ -95,7 +95,7 @@ exports.getCarTypes = (req, res) => {
 }
 
 exports.getCarBrands = (req, res) => {
-    Models.Brands.findOne({})
+    Brands.findOne({})
         .then((result) => {
             let brands = result.brand;
             res.status(200).json(brands);
@@ -107,7 +107,7 @@ exports.getCarBrands = (req, res) => {
 }
 
 exports.getCar = (req, res) => {
-    Models.Cars.find({})
+    Cars.find({})
         .then((cars) => {
             res.status(200).json(cars);
         }).catch((err) => {
@@ -117,9 +117,9 @@ exports.getCar = (req, res) => {
 }
 
 exports.viewCar = (req, res) => {
-    Models.Cars.findById(req.params.carId)
+    Cars.findById(req.params.carId)
         .then((car) => {
-            Models.Reviews.find({carId: req.params.carId})
+            Reviews.find({carId: req.params.carId})
             .then((reviews) => {
                 res.status(200).json([car, reviews]);
             })
@@ -135,14 +135,14 @@ exports.viewCar = (req, res) => {
 }
 
 exports.getUserCart = (req, res) => {
-    Models.Carts.find({username: req.params.user})
+    Carts.find({username: req.params.user})
         .then((items) => { 
             if (!items.length) { 
                 return res.status(200).json({"success": false});
             } else { 
                 let newItems = [];
                 return Promise.all(items.map((item, index) => {
-                    Models.Cars.findById(item.carId)
+                    Cars.findById(item.carId)
                     .then((car) => {
                         
                         if ((items.length - 1) == index) {
@@ -185,7 +185,7 @@ exports.getUserCart = (req, res) => {
 }
 
 exports.countCart = (req, res) => {
-    Models.Carts.find({username: req.params.user})
+    Carts.find({username: req.params.user})
         .then((carts) => {
             res.status(200).json({count: carts.length});
         })
@@ -197,7 +197,7 @@ exports.countCart = (req, res) => {
 
 //To add order into order collection.
 exports.addOrder = (req, res) => {
-    Models.Carts.find({username: req.body.username})
+    Carts.find({username: req.body.username})
         .then((cartItems) => {
             Promise.all (cartItems.map((item, index) => {
                 //Destructure request body
@@ -221,10 +221,10 @@ exports.addOrder = (req, res) => {
                         username,
                         carId: item.carId
                     }
-                    let newOrder = new Models.Orders(data);
+                    let newOrder = new Orders(data);
                     newOrder.save()
                         .then(() => {
-                            Models.Carts.findByIdAndDelete(item._id)
+                            Carts.findByIdAndDelete(item._id)
                                 .then((removed) => {
                                     return res.status(200).json({success: true})
                                 })
@@ -247,10 +247,10 @@ exports.addOrder = (req, res) => {
                         username,
                         carId: item.carId
                     }
-                    let newOrder = new Models.Orders(data);
+                    let newOrder = new Orders(data);
                     newOrder.save()
                         .then(() => {
-                            Models.Carts.findByIdAndDelete(item._id)
+                            Carts.findByIdAndDelete(item._id)
                                 .then((removed) => {
                                 })
                                 .catch((err) => {
@@ -272,7 +272,7 @@ exports.addOrder = (req, res) => {
 
  //get user orders
  exports.getOrders = (req, res) => {
-    Models.Orders.find({username: req.params.user})
+    Orders.find({username: req.params.user})
         .then((result) => {
             if (result.length) {
                 res.status(200).json({"success": true, "available": true, "orders": result})
@@ -287,7 +287,7 @@ exports.addOrder = (req, res) => {
 
  //get user last 5 orders
  exports.getLastOrders = (req, res) => {
-    Models.Orders.find({username: req.params.user}).sort({ _id: -1 }).limit(5)
+    Orders.find({username: req.params.user}).sort({ _id: -1 }).limit(5)
         .then((result) => {
             if (result.length) {
                 res.status(200).json({"success": true, "available": true, "orders": result})
@@ -302,7 +302,7 @@ exports.addOrder = (req, res) => {
 
     //get user auth details
  exports.getUserRank = (req, res) => {
-    Models.Users.findOne({username: req.params.user})
+    Users.findOne({username: req.params.user})
         .then((result) => {
             let {level, userType} = result;
                 res.status(200).json({"rank": level, "userType": userType});
@@ -319,7 +319,7 @@ exports.transferCartItems = (req, res) => {
         cartItems.map((cartItem, index) => {
             if ((cartItems.length - 1) === index) {
                 cartItem.username = req.body[0];
-                let newCartItem = new Models.Carts(cartItem);
+                let newCartItem = new Carts(cartItem);
                 newCartItem.save()
                 .then(() => {
                     return res.status(200).json({success: true})
@@ -329,7 +329,7 @@ exports.transferCartItems = (req, res) => {
                 });
             } else {
                 cartItem.username = req.body[0];
-                let newCartItem = new Models.Carts(cartItem);
+                let newCartItem = new Carts(cartItem);
                 newCartItem.save()
             }
         });
@@ -338,7 +338,7 @@ exports.transferCartItems = (req, res) => {
 
 //Getting random cars for homepage
 exports.getRandomCars = (req, res) => {
-    Models.Cars.aggregate([{$sample: {size: 3}}])
+    Cars.aggregate([{$sample: {size: 3}}])
         .then((cars) => {
             return res.status(200).json({"success": true, "cars": cars})
         }).catch((err) => {

@@ -28,161 +28,146 @@
             <app-modal></app-modal>
             <div class="container">
               <div class="row">
-                <div class="col-md-8 col-lg-8 offset-lg-2 offset-md-2 col-sm-12">
-                  <span *ngIf="changePassword then changePass"></span>
-                  <span *ngIf="profilePage then proPage"></span>
-                  <span *ngIf="updateProfile then updateProf"></span>
-
-                  <ng-template #proPage>
-                      <div class="btn-group mt-3 mb-3 float-right" data-toggle="buttons">
-                        <button class="btn btn-success btn-lg btn-outline-light" (click) ="passwordActive()">Change Password</button>
-                        <button class="btn btn-success btn-lg btn-outline-light" (click) ="updateActive()">Update Profile</button>
+                <div class="col-md-10 col-lg-10 offset-lg-1 offset-md-1 col-sm-12">
+                  <nav>
+                      <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                          <a class="nav-item nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="nav-profile" aria-selected="true">Profile page</a>
+                          <a class="nav-item nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="nav-edit" aria-selected="false">Edit profile</a>
+                          <a class="nav-item nav-link" id="password-tab" data-toggle="tab" href="#password" role="tab" aria-controls="nav-password" aria-selected="false">Change password</a>
                       </div>
-                      
-
-                      <form action="" class="p-4">
-                          <h2 class="text-center mt-5 mb-3">Your Profile Details</h2>
+                  </nav>
+                  <div class="tab-content mt-4" id="nav-tabContent">
+                      <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="nav-profile">
+                          <div class="container">
+                              <form action="" class="p-2">
                                     <div class="form-group">
-                                        <label for="firstName" class="text-left">First Name: </label>
-                                        <input type="text" class="form-control" readonly id="firstName" value="{{userData.details.firstName}}">
+                                        <label  class="text-left">First Name: </label>
+                                        <input type="text" class="form-control" readonly value="{{userData.details.firstName}}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="lastName" class="text-left">Last Name: </label>
-                                        <input type="text" class="form-control" readonly id="lastName" value="{{userData.details.lastName}}">
+                                        <label class="text-left">Last Name: </label>
+                                        <input type="text" class="form-control" readonly value="{{userData.details.lastName}}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="email" class="text-left">Email Address: </label>
-                                        <input type="email" class="form-control" readonly id="email" value="{{userData.email}}">
+                                        <label class="text-left">Email Address: </label>
+                                        <input type="email" class="form-control" readonly value="{{userData.email}}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="Username" class="text-left">Username: </label>
-                                        <input type="text" class="form-control" readonly id="Username" value="{{userData.username}}">
+                                        <label class="text-left">Username: </label>
+                                        <input type="text" class="form-control" readonly value="{{userData.username}}">
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label for="phNum" class="text-left">Phone Number: </label>
-                                        <input type="tel" class="form-control" readonly id="phNum" value="{{userData.details.phNum}}">
+                                        <label class="text-left">Phone Number: </label>
+                                        <input type="tel" class="form-control" readonly value="{{userData.details.phNum}}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="address" class="text-left">Address: </label>
-                                        <textarea class="form-control" readonly id="address" value="{{userData.details.address}}"></textarea>
+                                        <label class="text-left">Address: </label>
+                                        <textarea class="form-control" readonly value="{{userData.details.address}}"></textarea>
                                     </div>
-                        </form>
-                  </ng-template>
-
-                  <ng-template #updateProf>
-                      <div class="btn-group mt-3 mb-3 float-right" data-toggle="buttons">
-                        <button class="btn btn-success btn-lg btn-outline-light" (click) ="passwordActive()">Change Password</button>
-                        <button class="btn btn-success btn-lg btn-outline-light" (click) ="profileActive()">Go Back</button>
+                                </form>
+                              </div>
                       </div>
-                    <form action="" [formGroup]="updateGroup" class="p-4">
-                        <h2 class="text-center mt-5 mb-3">Update Profile</h2>
-                              <div class="bg-success text-white mb-2 p-3" *ngIf="success === true">Authenticating....</div>
-                              <div class="text-center mb-2 p-3" [class.alert-danger]='!status' [class.text-danger]='!status' [class.alert-success]='status' [class.text-success]='status' *ngIf="updateMessage">{{updateMessage}}</div>
-
-                                  <div class="form-group">
-                                      <label for="firstName" class="text-left">First Name: </label>
-                                      <input type="text" class="form-control" [class.is-invalid] ="updateGroup.controls.firstName.touched && updateGroup.controls.firstName.errors" formControlName="firstName" id="firstName" placeholder="{{userData.details.firstName}}">
-                                      <div class="alert-danger text-danger mt-1" *ngIf="updateGroup.controls.firstName.touched && updateGroup.controls.firstName.errors">
-                                        <small [hidden]="!updateGroup.controls.firstName.errors.required">Field is required </small>
+                      <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                        <div class="container">
+                          <form action="" [formGroup]="updateGroup" class="p-2">
+                                      <div class="form-group">
+                                          <label for="firstName" class="text-left">First Name: </label>
+                                          <input type="text" class="form-control" [class.is-invalid] ="updateGroup.controls.firstName.touched && updateGroup.controls.firstName.errors" formControlName="firstName" id="firstName" placeholder="{{userData.details.firstName}}">
+                                          <div class="alert-danger text-danger mt-1" *ngIf="updateGroup.controls.firstName.touched && updateGroup.controls.firstName.errors">
+                                            <small [hidden]="!updateGroup.controls.firstName.errors.required">Field is required </small>
+                                          </div>
                                       </div>
-                                  </div>
 
-                                  <div class="form-group">
-                                      <label for="lastName" class="text-left">Last Name: </label>
-                                      <input type="text" class="form-control" [class.is-invalid] ="updateGroup.controls.lastName.touched && updateGroup.controls.lastName.errors" formControlName="lastName" id="lastName" placeholder="{{userData.details.lastName}}">
-                                      <div class="alert-danger text-danger mt-1" *ngIf="updateGroup.controls.lastName.touched && updateGroup.controls.lastName.errors">
-                                        <small [hidden]="!updateGroup.controls.lastName.errors.required">Field is required </small>
+                                      <div class="form-group">
+                                          <label for="lastName" class="text-left">Last Name: </label>
+                                          <input type="text" class="form-control" [class.is-invalid] ="updateGroup.controls.lastName.touched && updateGroup.controls.lastName.errors" formControlName="lastName" id="lastName" placeholder="{{userData.details.lastName}}">
+                                          <div class="alert-danger text-danger mt-1" *ngIf="updateGroup.controls.lastName.touched && updateGroup.controls.lastName.errors">
+                                            <small [hidden]="!updateGroup.controls.lastName.errors.required">Field is required </small>
+                                          </div>
                                       </div>
-                                  </div>
 
-                                  <div class="form-group">
-                                      <label for="email" class="text-left">Email Address: </label>
-                                      <input type="email" readonly class="form-control"  id="email" value="{{userData.email}}">
-                                  </div>
-
-                                  <div class="form-group">
-                                      <label for="Username" class="text-left">Username: </label>
-                                      <input type="text" readonly class="form-control" id="Username" value="{{userData.username}}">
-                                  </div>
-                                  
-                                  <div class="form-group">
-                                      <label for="phNum" class="text-left">Phone Number: </label>
-                                      <input type="tel" class="form-control" [class.is-invalid] ="updateGroup.controls.phNum.touched && updateGroup.controls.phNum.errors" formControlName="phNum" id="phNum" placeholder="{{userData.details.phNum}}">
-                                      <div class="alert-danger text-danger mt-1" *ngIf="updateGroup.controls.phNum.touched && updateGroup.controls.phNum.errors">
-                                        <small [hidden]="!updateGroup.controls.phNum.errors.required">Field is required</small>
-                                        <small [hidden]="!updateGroup.controls.phNum.errors.pattern">Enter valid phone number</small>
+                                      <div class="form-group">
+                                          <label for="email" class="text-left">Email Address: </label>
+                                          <input type="email" readonly class="form-control"  id="email" value="{{userData.email}}">
                                       </div>
-                                  </div>
 
-                                  <div class="form-group">
-                                      <label for="address" class="text-left">Address: </label>
-                                      <textarea class="form-control" [class.is-invalid] ="updateGroup.controls.address.touched && updateGroup.controls.address.errors" formControlName="address" id="address" placeholder="{{userData.details.address}}"></textarea>
-                                      <div class="alert-danger text-danger mt-1" *ngIf="updateGroup.controls.address.touched && updateGroup.controls.address.errors">
-                                        <small [hidden]="!updateGroup.controls.address.errors.required">Field is required</small>
+                                      <div class="form-group">
+                                          <label for="Username" class="text-left">Username: </label>
+                                          <input type="text" readonly class="form-control" id="Username" value="{{userData.username}}">
                                       </div>
-                                  </div>
+                                      
+                                      <div class="form-group">
+                                          <label for="phNum" class="text-left">Phone Number: </label>
+                                          <input type="tel" class="form-control" [class.is-invalid] ="updateGroup.controls.phNum.touched && updateGroup.controls.phNum.errors" formControlName="phNum" id="phNum" placeholder="{{userData.details.phNum}}">
+                                          <div class="alert-danger text-danger mt-1" *ngIf="updateGroup.controls.phNum.touched && updateGroup.controls.phNum.errors">
+                                            <small [hidden]="!updateGroup.controls.phNum.errors.required">Field is required</small>
+                                            <small [hidden]="!updateGroup.controls.phNum.errors.pattern">Enter valid phone number</small>
+                                          </div>
+                                      </div>
 
-                                  <div class="form-group">
-                                      <button type="button" class="btn btn-success float-right" [disabled]="!updateGroup.valid" (click)="updatePro()">Update Profile</button>
-                                  </div>
-                      </form>
-                  </ng-template>
-                  
-                  <ng-template #changePass>
-                      <div class="btn-group mt-3 mb-3 float-right" data-toggle="buttons">
-                        <button class="btn btn-success btn-lg btn-outline-light" (click) ="updateActive()">Update Profile</button>
-                        <button class="btn btn-success btn-lg btn-outline-light" (click) ="profileActive()">Go Back</button>
+                                      <div class="form-group">
+                                          <label for="address" class="text-left">Address: </label>
+                                          <textarea class="form-control" [class.is-invalid] ="updateGroup.controls.address.touched && updateGroup.controls.address.errors" formControlName="address" id="address" placeholder="{{userData.details.address}}"></textarea>
+                                          <div class="alert-danger text-danger mt-1" *ngIf="updateGroup.controls.address.touched && updateGroup.controls.address.errors">
+                                            <small [hidden]="!updateGroup.controls.address.errors.required">Field is required</small>
+                                          </div>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <button type="button" class="btn btn-success float-right" [disabled]="!updateGroup.valid" (click)="updatePro()">Update Profile</button>
+                                      </div>
+                          </form>
+                        </div>
                       </div>
-                    <form action="" [formGroup]="passwordGroup" class="p-4">
-                      <h2 class="text-center mt-5 mb-3">Change Password</h2>
-                            <div class="bg-success text-white mb-2 p-3" *ngIf="success === true">Authenticating....</div>
-                              <div class="text-center mb-2 p-3" [class.alert-danger]='!status' [class.text-danger]='!status' [class.alert-success]='status' [class.text-success]='status' *ngIf="updateMessage">{{updateMessage}}</div>
-
-
-                                <div class="form-group">
-                                  <label for="oldPassword">Old Password: </label>
-                                  <input type="password" class="form-control" [class.is-invalid] ="passwordGroup.controls.oldPassword.touched && passwordGroup.controls.oldPassword.errors" formControlName="oldPassword" id="oldPassword" placeholder="***********">
-                                  <div class="alert-danger text-danger mt-1" *ngIf="passwordGroup.controls.oldPassword.touched && passwordGroup.controls.oldPassword.errors">
-                                    <small [hidden]="!passwordGroup.controls.oldPassword.errors.required">Provide old password</small>
-                                    <small [hidden]="!passwordGroup.controls.oldPassword.errors.minlength"> Password must be between 6-32 characters</small> 
-                                    <small [hidden]="!passwordGroup.controls.oldPassword.errors.maxlength"> Password must be between 6-32 characters</small> 
-                                  </div>
-                                </div>
-
-                                <div class="form-group">
-                                  <label for="newPassword">New Password: </label>
-                                  <input type="password" class="form-control" [class.is-invalid] ="passwordGroup.controls.newPassword.touched && passwordGroup.controls.newPassword.errors" formControlName="newPassword" id="newPassword" placeholder="***********">
-                                  <div class="alert-danger text-danger mt-1" *ngIf="passwordGroup.controls.newPassword.touched && passwordGroup.controls.newPassword.errors">
-                                    <small [hidden]="!passwordGroup.controls.newPassword.errors.required">Field is required </small>
-                                    <small [hidden]="!passwordGroup.controls.newPassword.errors.minlength"> Password must be between 6-32 characters</small> 
-                                    <small [hidden]="!passwordGroup.controls.newPassword.errors.maxlength"> Password must be between 6-32 characters</small> 
-                                  </div>
-                                </div>
-
-                                <div class="form-group">
-                                  <label for="repPassword">Repeat New Password: </label>
-                                  <input type="password" class="form-control" [class.is-invalid] ="passwordGroup.controls.repPassword.touched && passwordGroup.controls.repPassword.errors" (blur)='checkPassword()' formControlName="repPassword" id="repPassword" placeholder="***********">
-                                  <div class="alert-danger text-danger mt-1" *ngIf="passwordGroup.controls.repPassword.touched && passwordGroup.controls.repPassword.errors">
-                                    <small [hidden]="!passwordGroup.controls.repPassword.errors.required">Field is required </small>
-                                    <small [hidden]="!passwordGroup.controls.repPassword.errors.minlength"> Password must be between 6-32 characters</small> 
-                                    <small [hidden]="!passwordGroup.controls.repPassword.errors.maxlength"> Password must be between 6-32 characters</small> 
-                                  </div>
-                                  <div class="alert-danger text-danger mt-1" *ngIf="noMatch">
-                                    <small>New password does not match</small>
-                                  </div>
-                                </div>
-                                
-
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-success float-right" [disabled]="!passwordGroup.valid" (click)="updatePassword()">Change Password</button>
-                                </div>
-                    </form>
-                  </ng-template>
+                      <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                          <div class="container">
+                            <form action="" [formGroup]="passwordGroup" class="p-2">
+                                        <div class="form-group">
+                                          <label for="oldPassword">Current Password: </label>
+                                          <input type="password" class="form-control" [class.is-invalid] ="passwordGroup.controls.oldPassword.touched && passwordGroup.controls.oldPassword.errors" formControlName="oldPassword" id="oldPassword" placeholder="***********">
+                                          <div class="alert-danger text-danger mt-1" *ngIf="passwordGroup.controls.oldPassword.touched && passwordGroup.controls.oldPassword.errors">
+                                            <small [hidden]="!passwordGroup.controls.oldPassword.errors.required">Provide old password</small>
+                                            <small [hidden]="!passwordGroup.controls.oldPassword.errors.minlength"> Password must be between 6-32 characters</small> 
+                                            <small [hidden]="!passwordGroup.controls.oldPassword.errors.maxlength"> Password must be between 6-32 characters</small> 
+                                          </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                          <label for="newPassword">New Password: </label>
+                                          <input type="password" class="form-control" [class.is-invalid] ="passwordGroup.controls.newPassword.touched && passwordGroup.controls.newPassword.errors" formControlName="newPassword" id="newPassword" placeholder="***********">
+                                          <div class="alert-danger text-danger mt-1" *ngIf="passwordGroup.controls.newPassword.touched && passwordGroup.controls.newPassword.errors">
+                                            <small [hidden]="!passwordGroup.controls.newPassword.errors.required">Field is required </small>
+                                            <small [hidden]="!passwordGroup.controls.newPassword.errors.minlength"> Password must be between 6-32 characters</small> 
+                                            <small [hidden]="!passwordGroup.controls.newPassword.errors.maxlength"> Password must be between 6-32 characters</small> 
+                                          </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                          <label for="repPassword">Confirm New Password: </label>
+                                          <input type="password" class="form-control" [class.is-invalid] ="passwordGroup.controls.repPassword.touched && passwordGroup.controls.repPassword.errors" (blur)='checkPassword()' formControlName="repPassword" id="repPassword" placeholder="***********">
+                                          <div class="alert-danger text-danger mt-1" *ngIf="passwordGroup.controls.repPassword.touched && passwordGroup.controls.repPassword.errors">
+                                            <small [hidden]="!passwordGroup.controls.repPassword.errors.required">Field is required </small>
+                                            <small [hidden]="!passwordGroup.controls.repPassword.errors.minlength"> Password must be between 6-32 characters</small> 
+                                            <small [hidden]="!passwordGroup.controls.repPassword.errors.maxlength"> Password must be between 6-32 characters</small> 
+                                          </div>
+                                          <div class="alert-danger text-danger mt-1" *ngIf="noMatch">
+                                            <small>New password does not match</small>
+                                          </div>
+                                        </div>
+                                        
+        
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-success float-right" [disabled]="!passwordGroup.valid" (click)="updatePassword()">Change Password</button>
+                                        </div>
+                            </form>
+                          </div>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>

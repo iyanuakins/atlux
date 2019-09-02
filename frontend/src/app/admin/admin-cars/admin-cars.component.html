@@ -5,9 +5,11 @@
             <div class="sidebar">
                 <ul>
                     <li><a [routerLink]="[ '/admin' ]" [routerLinkActiveOptions]= "{ exact: true }" routerLinkActive="actives"> Dashboard </a></li>
-                    <li><a [routerLink]="[ '/admin/manage/orders' ]" routerLinkActive="actives"> Manage Orders </a></li>
                     <li><a [routerLink]="[ '/admin/manage/users' ]" routerLinkActive="actives"> Manage Users </a></li>
                     <li><a [routerLink]="[ '/admin/manage/drivers' ]" routerLinkActive="actives"> Manage Drivers </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/brands' ]" routerLinkActive="actives"> Manage brands </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/orders' ]" routerLinkActive="actives"> Manage Orders </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/cars' ]" routerLinkActive="actives"> Manage Cars </a></li>
                     <li><a [routerLink]="[ '/admin/manage/reviews' ]" routerLinkActive="actives"> Manage Reviews </a></li>
                     <li><a [routerLink]="[ '/user/contact' ]" routerLinkActive="actives"> Contact </a></li>
                     <li><a [routerLink]="[ '/user/about' ]" routerLinkActive="actives"> About </a></li>
@@ -18,18 +20,303 @@
     
         <!-- Page Content Holder -->
         <div id="content">
-                <div class="navi-btn" [class.active]='sidebar' (click)="sidebarActive()">
-                    <label for="navi-check" class="pointer">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </label>
+            <div class="navi-btn" [class.active]='sidebar' (click)="sidebarActive()">
+                <label for="navi-check" class="pointer">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+            </div>
+            <div class="loader-overlay" *ngIf="loader">
+                <img src="./../../../assets/img/loader.gif" alt="" class="loader">
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="btn-group mt-3 mb-3 float-right" data-toggle="buttons">
+                            <p>
+                                <span *ngIf="!avail">
+                                    <button class="btn btn-success btn-lg btn-outline-light" (click)="addBrandToDB()">Add Brand to DB</button>
+                                    <button class="btn btn-success btn-lg btn-outline-light" (click)="addTypeToDB()">Add Type to DB</button>
+                                </span>
+                                <span *ngIf="avail">
+                                    <button class="btn btn-success btn-lg btn-outline-light" (click)="showCarModal()">Add/Remove car</button>
+                                    <button class="btn btn-success btn-lg btn-outline-light" data-toggle="modal" data-target="#manageModal">Add/Remove car Brand/Type</button>
+                                </span>
+                                <!-- <button class="btn btn-success btn-lg btn-outline-light" (click)="addTypeToDB()">Add/Remove Car</button> -->
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div class="loader-overlay" *ngIf="loader">
-                    <img src="./../../../assets/img/loader.gif" alt="" class="loader">
+                         
+                        
+                <!-- Car Brand and type management modal -->
+                <div class="modal fade" id="manageModal" tabindex="-1" role="dialog" aria-labelledby="manageModalTitle" aria-hidden="true" data-backdrop="false">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="pr-2 float-right">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" >&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <nav>
+                                        <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active" id="type-tab" data-toggle="tab" href="#type" role="tab" aria-controls="type-tab" aria-selected="true">Add New Car Brand/type</a>
+                                            <a class="nav-item nav-link" id="brand-tab" data-toggle="tab" href="#brand" role="tab" aria-controls="brand-tab" aria-selected="false">Remove New Car Brand</a>
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content mt-4" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="type" role="tabpanel" aria-labelledby="type-tab">
+                                                <div class="alert-success text-success text-center mb-2 p-3" *ngIf="carMessage">{{carMessage}}</div>
+                                                <ng-container *ngIf="isBrand; then brand; else type"></ng-container>
+                                                <ng-template #brand>
+                                                    <button type="button" class="btn btn-outline-success btn-block" (click)="toggleAdd()">Add Car Type</button>
+                                                    <form action="" [formGroup]="brandGroup"  class="pt-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <label for="brandName" class="sr-only">Brand Name</label>
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">Brand Name</div>
+                                                                </div>
+                                                                <input type="text" class="form-control" [class.is-invalid] ="brandGroup.controls.brandName.touched && brandGroup.controls.brandName.errors" formControlName="brandName" id="brandName" placeholder="Brand Name">
+                                                            </div>
+                                                            <div class="alert-danger text-danger mt-1" *ngIf="brandGroup.controls.brandName.touched && brandGroup.controls.brandName.errors">
+                                                                <small [hidden]="!brandGroup.controls.brandName.errors.required">Field is required </small>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" id="brandBtn" class="btn bg-success btn-outline-light btn-lg float-right" (click)="addCarBrand()">Add Car Brand</button>
+                                                    </form>
+                                                </ng-template>
+                                                <ng-template #type>
+                                                    <button type="button" class="btn btn-outline-success btn-block" (click)="toggleAdd()">Add Car Brand</button>
+                                                    <form action="" [formGroup]="typeGroup"  class="pt-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <label for="typeName" class="sr-only">Type Name</label>
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">Type Name</div>
+                                                                </div>
+                                                                <input type="text" class="form-control" [class.is-invalid] ="typeGroup.controls.typeName.touched && typeGroup.controls.typeName.errors" formControlName="typeName" id="typeName" placeholder="Type Name">
+                                                            </div>
+                                                            <div class="alert-danger text-danger mt-1" *ngIf="typeGroup.controls.typeName.touched && typeGroup.controls.typeName.errors">
+                                                                <small [hidden]="!typeGroup.controls.typeName.errors.required"> Field is required </small>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" id="typeBtn" class="btn bg-success btn-outline-light btn-lg float-right" (click)="addCarType()">Add Car Type</button>
+                                                    </form>
+                                                </ng-template>
+                                        </div>   
+                                        <div class="tab-pane fade" id="brand" role="tabpanel" aria-labelledby="brand-tab">
+                                                <div class="alert-success text-success text-center mb-2 p-3" *ngIf="carMessage">{{carMessage}}</div>
+                                                <ng-container *ngIf="isRemoveBrand; then removeBrand; else removeType"></ng-container>
+                                                <ng-template #removeBrand>
+                                                    <button type="button" class="btn btn-outline-warning btn-block" (click)="toggleRemove()">Remove Car Type</button>
+                                                    <form action="" [formGroup]="removeBrandGroup"  class="pt-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <label for="brandName" class="sr-only">Select Brand</label>
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">Select Brand</div>
+                                                                </div>
+                                                                <select class="form-control" [class.is-invalid] ="removeBrandGroup.controls.brandName.touched && removeBrandGroup.controls.brandName.errors" formControlName="brandName" id="brandName">
+                                                                    <option  *ngFor="let brand of brands" value="{{brand.name}}">{{brand.name | uppercase}}</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="alert-danger text-danger mt-1" *ngIf="removeBrandGroup.controls.brandName.touched && removeBrandGroup.controls.brandName.errors">
+                                                                <small [hidden]="!removeBrandGroup.controls.brandName.errors.required">Field is required </small>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <button type="button" id="removeBrandBtn" class="btn bg-warning btn-outline-light btn-lg float-right" (click)="removeCarBrand()">Remove Car Brand</button>
+                                                    </form>
+                                                </ng-template>
+                                                <ng-template #removeType>
+                                                    <button type="button" class="btn btn-outline-warning btn-block" (click)="toggleRemove()">Remove Car Brand</button>
+                                                    <form action="" [formGroup]="removeTypeGroup"  class="pt-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <label for="type" class="sr-only">Select Type</label>
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">Select Type</div>
+                                                                </div>
+                                                                <select [class.is-invalid]="removeTypeGroup.controls.typeName.touched && removeTypeGroup.controls.typeName.errors" formControlName="typeName" class="form-control">
+                                                                    <option  *ngFor="let type of types" value="{{type.name}}">{{type.name | uppercase}}</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="alert-danger text-danger mt-1" *ngIf="removeTypeGroup.controls.typeName.touched && removeTypeGroup.controls.typeName.errors">
+                                                                <small [hidden]="!removeTypeGroup.controls.typeName.errors.required"> Field is required </small>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" id="removeTypeBtn" class="btn bg-warning btn-outline-light btn-lg float-right" (click)="removeCarType()">Remove Car Type</button>
+                                                    </form>
+                                                </ng-template>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        
+                        </div> 
                 </div>
-    
-            
+
+                <!-- Car Management modal -->
+                <div class="modal fade" id="carModal" tabindex="-1" role="dialog" aria-labelledby="carModalTitle" aria-hidden="true" data-backdrop="false">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="pr-2 float-right">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true" >&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                    <nav>
+                                        <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active" id="addcar-tab" data-toggle="tab" href="#addcar" role="tab" aria-controls="addcar" aria-selected="true">Add car</a>
+                                            <a class="nav-item nav-link" id="removecar-tab" data-toggle="tab" href="#removecar" role="tab" aria-controls="nav-profile" aria-selected="false">Remove car</a>
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content mt-4" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="addcar" role="tabpanel" aria-labelledby="addcar-tab">
+                                            <form [formGroup]="addCarGroup">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="brand" class="sr-only">Select Brand</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Select Brand</div>
+                                                        </div>
+                                                        <select formControlName="brand" id="brand" class="form-control">
+                                                            <option  *ngFor="let brand of brands" value="{{brand.name}}">{{brand.name | uppercase}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="text-danger p-2 mt-1" *ngIf="addCarGroup.controls.brand.touched && addCarGroup.controls.brand.errors">Select brand</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="type" class="sr-only">Select Type</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Select Type</div>
+                                                        </div>
+                                                        <select formControlName="type" id="type" class="form-control">
+                                                            <option  *ngFor="let type of types" value="{{type.name}}">{{type.name | uppercase}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="text-danger p-2 mt-1" *ngIf="addCarGroup.controls.type.touched && addCarGroup.controls.type.errors">Select Type</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="model" class="sr-only">Model</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Model</div>
+                                                        </div>
+                                                        <input type="text" formControlName="model" id="model" class="form-control">
+                                                    </div>
+                                                    <div class="text-danger p-2 mt-1" *ngIf="addCarGroup.controls.model.touched && addCarGroup.controls.model.errors">Model is required</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="colour" class="sr-only">Select Colour</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Select Colour</div>
+                                                        </div>
+                                                        <select formControlName="colour" id="colour" class="form-control">
+                                                            <option  value="white"> WHITE </option>
+                                                            <option  value="black"> BLACK </option>
+                                                            <option  value="red"> RED </option>
+                                                            <option  value="blue"> BLUE </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="text-danger p-2 mt-1" *ngIf="addCarGroup.controls.colour.touched && addCarGroup.controls.colour.errors">Select Type</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="price" class="sr-only">Price</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Price</div>
+                                                        </div>
+                                                        <input type="number" formControlName="pricePerKM" id="price" class="form-control">
+                                                    </div>
+                                                    <div class="text-danger p-2 mt-1" *ngIf="addCarGroup.controls.pricePerKM.touched && addCarGroup.controls.pricePerKM.errors">Price is required</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="desc" class="sr-only">Descriiption</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Description</div>
+                                                        </div>
+                                                        <textarea formControlName="description" id="desc" class="form-control"></textarea>
+                                                    </div>
+                                                    <div class="text-danger p-2 mt-1" *ngIf="addCarGroup.controls.description.touched && addCarGroup.controls.description.errors">Model is required</div>
+                                                </div>
+
+                                                <button type="button" id="addCarBtn" class="btn bg-success btn-outline-light btn-lg float-right" [disabled]="!addCarGroup.valid" (click)="addCar()">Add car</button>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane fade" id="removecar" role="tabpanel" aria-labelledby="removecar-tab">
+                                            <form [formGroup]="removeCarGroup">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="car" class="sr-only">Select car</label>
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Select car</div>
+                                                        </div>
+                                                        <select formControlName="car" id="car" class="form-control">
+                                                            <option  *ngFor="let car of cars" value="{{car._id}}">{{car.brand | uppercase}} {{car.model | uppercase}} ({{car.colour | uppercase}})</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="text-danger p-2 mt-1" *ngIf="removeCarGroup.controls.car.touched && removeCarGroup.controls.car.errors">Select a car to remove</div>
+                                                </div>
+                                                <button type="button" id="removeCarBtn" class="btn bg-success btn-outline-light btn-lg float-right" [disabled]="!removeCarGroup.valid" (click)="removeCar()">Remove car</button>
+                                            </form> 
+                                            
+                                        </div>
+                                    </div> 
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <button [hidden]='true' id="viewBtn" data-toggle="modal" data-target="#carModal"> View </button>
+                
+                <!-- Display car  -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="carData">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-9 mt-4" *ngFor="let car of carData | paginate: { itemsPerPage: 6, currentPage: p, totalItems: carData.length };">
+                                <div class="container jumbotron">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <img src="./../../../{{car.image}}" class="img-responsive" alt="car image" width="100%">
+                                                    <p class="text-danger text-sm-center"><small>Price: &#8358;{{car.pricePerKM}}/KM</small></p>
+                                                </div>
+                                                <div class="col-7">
+                                                    <p class="font-weight-bold text-uppercase">{{car.brand}} {{car.model}}</p>
+                                                    <p class="text-capitalize">Colour: {{car.colour}}</p>
+                                                    <p>Rating: {{car.rating}}</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-success btn-sm btn-block" > View </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <pagination-controls (pageChange)="p = $event"
+                                                maxSize="5"
+                                                responsive="true"
+                                                autoHide="true"></pagination-controls>
+                        </div>
+                    </div>
+
+                        <div class="col-12" *ngIf="!carData">
+                            <h2 class="text-center mt-5 pt-5"> No car Available for display</h2>
+                        </div>
+                
+                </div>
+            </div>
         </div>
     </div>
 <app-userfooter></app-userfooter>

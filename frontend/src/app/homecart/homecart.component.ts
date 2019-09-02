@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HomeService } from '../services/home.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-homecart',
@@ -23,7 +24,8 @@ export class HomecartComponent implements OnInit {
   constructor(private form: FormBuilder ,
               private homeService: HomeService,
               private authService: AuthService,
-              private router: Router) { 
+              private router: Router,
+              private toastr: ToastrService) { 
     this.checkoutGroup = this.form.group({
       pickUpDate: ['', Validators.required],
       pickUpTime: ['00:00', Validators.required],
@@ -51,6 +53,13 @@ export class HomecartComponent implements OnInit {
       this.totalCost = this.cartItems.reduce((acc, item) => { 
         return acc += parseInt(item.carPrice)
       }, 0);
+      this.toastr.success('Car removed from cart', 'Removed', {
+        timeOut: 3000,
+        closeButton: true,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        easing: 'ease-in'
+      });
       if (this.totalCost == 0) {
         localStorage.removeItem('cartItems');
         this.cartItems = null;

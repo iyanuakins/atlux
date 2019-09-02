@@ -58,10 +58,10 @@ export class AdminDashboardComponent implements OnInit {
           if (res.available) {
             this.users = res.users;
           } else {
-            this.orders = 0;
+            this.users = [];
           }
         } else {
-          this.orders = 0;
+          this.users = [];
           }
         })
 
@@ -71,11 +71,11 @@ export class AdminDashboardComponent implements OnInit {
           if (res.available) {
             this.orders = res.orders;
           } else {
-            this.orders = 0;
+            this.orders = [];
           }
           this.loader = false;
         } else {
-          this.orders = 0;
+          this.orders = [];
           this.loader = false;
           }
         })

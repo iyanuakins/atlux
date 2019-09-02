@@ -1,17 +1,17 @@
-const Models = require('../models/Models');
+const { Users } = require('../models/Models');
 const encrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const secKey = "03SecretKey04";
 
 
 exports.register = (req, res) => {
-   let newUser = new Models.Users(req.body);
+   let newUser = new Users(req.body);
    
-   Models.Users.findOne({email: newUser.email}).then((result) => {
+   Users.findOne({email: newUser.email}).then((result) => {
        if (result) {
          return res.status(200).json({error: 'email'});
        } else {
-            Models.Users.findOne({username: newUser.username}).then((result) => {
+            Users.findOne({username: newUser.username}).then((result) => {
                 if (result) {
                     return res.status(200).json({error: 'username'});
                 } else {
@@ -41,8 +41,8 @@ exports.register = (req, res) => {
 
 exports.login = (req, res) => {
     
-    let userLogin = new Models.Users(req.body);
-    Models.Users.findOne({username: userLogin.username})
+    let userLogin = new Users(req.body);
+    Users.findOne({username: userLogin.username})
         .then((result) => {
             if (result) {
                 encrypt.compare(userLogin.password, result.password, (err, match) => {
@@ -64,7 +64,7 @@ exports.login = (req, res) => {
 }
 
 exports.checkEmail = (req, res) => {
-    Models.Users.findOne({email: req.body.email}).then((result) => {
+    Users.findOne({email: req.body.email}).then((result) => {
         if(result){
             res.status(200).json({status : true});
         } else {
@@ -74,7 +74,7 @@ exports.checkEmail = (req, res) => {
 }
 
 exports.checkUsername = (req, res) => {
-    Models.Users.findOne({username: req.body.username}).then((result) => {
+    Users.findOne({username: req.body.username}).then((result) => {
         if(result){
             res.status(200).json({status : true});
         } else {

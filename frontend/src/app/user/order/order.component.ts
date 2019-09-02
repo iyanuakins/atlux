@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-order',
@@ -18,8 +19,10 @@ export class OrderComponent implements OnInit {
   loader: Boolean = false;
   userRank: Number;
   userType: String;
+  p: Number = 1;
   constructor(private router: Router,
-              private userService: UserService) { }
+              private userService: UserService,
+              private toastr: ToastrService) { }
 
   sidebarActive () {
     if (this.sidebar === true ) {
@@ -48,22 +51,31 @@ export class OrderComponent implements OnInit {
       if (res.success && res.status == 'new') {
         this.userService.updateCartCount('', 'increase');
         this.loader = false;
-        this.cartMessage ='Successfully added to cart';
-        setTimeout(() => {
-          this.cartMessage=''
-        }, 1000);
+        this.toastr.success('Successfully added to cart', 'Success', {
+          timeOut: 3000,
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          easing: 'ease-in'
+        });
       } else if (res.success && res.status == 'old') {
         this.loader = false;
-        this.cartMessage ='Car previously added to cart';
-        setTimeout(() => {
-          this.cartMessage=''
-        }, 1000);
+        this.toastr.info('Car previously added to cart', 'Info', {
+          timeOut: 3000,
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          easing: 'ease-in'
+        });
       } else {
         this.loader = false;
-        this.cartMessage ='Failed to add to cart';
-        setTimeout(() => {
-          this.cartMessage=''
-        }, 1000);
+        this.toastr.error('Failed to add to cart', 'Failed', {
+          timeOut: 3000,
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          easing: 'ease-in'
+        });
       }
     })
   }
@@ -76,12 +88,21 @@ export class OrderComponent implements OnInit {
       }
     this.userService.addToCart(data).subscribe((res) => {
       if (res.success) {
+        if (res.status == 'new') {
+        this.userService.updateCartCount('', 'increase');
+        this.router.navigate(['/user/cart'])
+        } else {
+          this.router.navigate(['/user/cart'])
+        }
       } else {
         this.loader = false;
-        this.cartMessage ='Failed to add to Checkout';
-        setTimeout(() => {
-          this.cartMessage=''
-        }, 1000);
+        this.toastr.error('Failed to add to cart', 'Failed', {
+          timeOut: 3000,
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'decreasing',
+          easing: 'ease-in'
+        });
       }
     })
   }
@@ -91,7 +112,7 @@ export class OrderComponent implements OnInit {
     this.userType = this.userService.userType;
     this.carData = this.userService.cars;
     if(!this.carData) {
-     this.router.navigate(['/user'])
+     this.router.navigate(['/user']);
     }
   }
 

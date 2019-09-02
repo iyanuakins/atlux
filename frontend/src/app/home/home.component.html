@@ -231,7 +231,7 @@
                             <div class="card shadow-sm">
                                 <img src="{{carViewData?.image}}" class="card-img-top mt-2" alt="car image">
                                 <div class="card-body">
-                                    <h5 class="card-title text-center">{{carViewData?.brand}} {{carViewData?.model}}</h5>
+                                    <h5 class="card-title text-center">{{carViewData?.brand | uppercase }} {{carViewData?.model | uppercase}}</h5>
                                     <p class="card-text">Colour: {{carViewData?.colour | uppercase }}</p>
                                     <p class="card-text">Price: &#8358;{{carViewData?.pricePerKM}}/KM</p>
                                     <p class="card-text">Rating: {{carViewData?.rating}}</p>
@@ -275,7 +275,7 @@
             <div class="card shadow-lg" style="width: 18rem;">
                 <img src="./../../{{car.image}}" class="card-img-top" alt="car image">
                 <div class="card-body">
-                        <h5 class="card-title text-center">{{car.brand}} {{car.model}}</h5>
+                        <h5 class="card-title text-center">{{car.brand | uppercase}} {{car.model | uppercase}}</h5>
                         <p class="card-text">Colour: {{car.colour | uppercase }}</p>
                         <p class="card-text">Price: &#8358;{{car.pricePerKM}}/KM</p>
                         <p class="card-text">Rating: {{car.rating}}</p>

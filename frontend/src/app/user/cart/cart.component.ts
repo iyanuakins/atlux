@@ -21,7 +21,7 @@ export class CartComponent implements OnInit {
   latitude: String;
   longitude: String;
   distance : String;
-
+  p: Number = 1;
   constructor(private form: FormBuilder ,
               private userService: UserService,
               private router: Router) { 

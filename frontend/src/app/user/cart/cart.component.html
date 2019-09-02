@@ -26,8 +26,8 @@
         <div class="loader-overlay" *ngIf="loader">
             <img src="./../../../assets/img/loader.gif" alt="" class="loader">
         </div>
-        <div class="text-center mt-4" *ngIf="cartItems == null">
-            <h2>Your Cart is empty, place order <a class="text-primary pointer" data-toggle="modal" data-target="#orderModal">here</a> </h2>
+        <div class="text-center mt-4" *ngIf="!cartItems">
+            <h2>Your Cart is empty, place order <a class="txt-primary pointer" data-toggle="modal" data-target="#orderModal">here</a> </h2>
         </div>
         
             <!-- <div class="text-center mt-4" *ngIf="!cartLength">
@@ -63,7 +63,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-6 mt-3" *ngFor="let cart of cartItems">
+                        <div class="col-lg-4 col-md-4 col-sm-6 mt-3" *ngFor="let cart of cartItems | paginate: { itemsPerPage: 9, currentPage: p, totalItems: cartItems.length };">
                             <div class="container jumbotron">
                                 <div class="row">
                                     <div class="col-12">
@@ -78,6 +78,12 @@
                                 </div>
                             </div>
                         </div> 
+                            <div class="text-right">
+                                <pagination-controls (pageChange)="p = $event"
+                                                    maxSize="5"
+                                                    responsive="true"
+                                                    autoHide="true"></pagination-controls>
+                            </div>
                         </div>
                         
                     </div>

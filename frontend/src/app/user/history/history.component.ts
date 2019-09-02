@@ -14,6 +14,7 @@ export class HistoryComponent implements OnInit {
   orders: Object;
   userRank: Number;
   userType: String;
+  p: Number = 1;
   constructor(private router: Router,
               private userService: UserService) { }
 
