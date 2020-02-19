@@ -14,28 +14,34 @@ const secKey = "03SecretKey04";
 
 
 const verifyToken = (req, res, next) => {
-    if (!req.headers.authorization) {
+    if (req.headers.authorization) {
+        let token = req.headers.authorization.split(' ')[1];
+        if (token === 'null') {
+            return res.status(401).json({error: 'Unauthorized Request'});
+        } else {
+            jwt.verify(token, secKey, (err, decoded) => {
+                if (err) {
+                    return res.status(401).json({error: 'Unauthorized Request'});
+                } else {
+                    req.userId = decoded.subject;
+                    next();
+                }
+            })
+        }
+        
+    } else {
         return res.status(401).json({error: 'Unauthorized Request'});
     }
-    let token = req.headers.authorization.split(' ')[1];
-    if (token === 'null') {
-        return res.status(401).json({error: 'Unauthorized Request'});
-    }
-    let payload = jwt.verify(token, secKey)
-    if (!payload) {
-        return res.status(401).json({error: 'Unauthorized Request'});
-    }
-    req.userId = payload.subject;
-    next();
 }
 
 app.use(cors());
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/atlux', {useNewUrlParser: true}).catch((err) => {
-    console.log('Error: '+ err);
-})
+mongoose.connect('mongodb://localhost:27017/atlux', {useNewUrlParser: true})
+    .catch((err) => {
+        console.log(err);
+    })
 mongoose.set('useFindAndModify', false);
 const connection = mongoose.connection;
 
@@ -45,7 +51,6 @@ connection.once('open', () => console.log('Connected to MongoDB....'))
 app.get('', (req, res) => {
     res.send("Hello World");
 });
-
 
 app.use('/auth', authRoutes);
 app.use('/home', homeRoutes);

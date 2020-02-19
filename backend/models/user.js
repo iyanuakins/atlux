@@ -13,11 +13,11 @@ const DetailsSchema = new Schema({
     },
     lastBooking: {
         type: Date,
-        default: Date.now
+        default: 0
     },
     lastBooked: {
         type: Date,
-        default: Date.now
+        default: 0
     },
     address: {
         type: String,
