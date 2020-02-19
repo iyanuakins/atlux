@@ -11,6 +11,26 @@ export class AdminService {
   constructor(private http: HttpClient,
               private router: Router) { }
 
+  addBrandToDB() {
+    let data = {brand: {
+        name: "lexus"
+      }
+    }
+    return this.http.post<any>(`${this.url}/admin/addbrand`, data);
+  }
+
+  addTypeToDB() {
+    let data = {cartype: {
+        name: "suv"
+      }
+    }
+    return this.http.post<any>(`${this.url}/admin/addtype`, data);
+  }
+  
+  checkDB(): Observable<any> {
+    return this.http.get<any>(`${this.url}/admin/checkdb`);
+  }
+
   addCar(data): Observable<any> {
     return this.http.post<any>(`${this.url}/admin/addcar`, data);
   }
@@ -56,6 +76,10 @@ export class AdminService {
     return this.http.post<any>(`${this.url}/admin/suspenddriver`, driverId);
   }
 
+  suspendUser(userId): Observable<any> {
+    return this.http.post<any>(`${this.url}/admin/suspenduser`, userId);
+  }
+
   getAllDriver(): Observable<any> {
     return this.http.get<any>(`${this.url}/admin/getalldrivers`);
   }
@@ -72,8 +96,8 @@ export class AdminService {
     return this.http.post<any>(`${this.url}/admin/completeorder`, orderId);
   }
 
-  approveOrder(orderId): Observable<any> {
-    return this.http.post<any>(`${this.url}/admin/approveorder`, orderId);
+  approveOrder(data): Observable<any> {
+    return this.http.post<any>(`${this.url}/admin/approveorder`, data);
   }
 
   getLastOrders(): Observable<any> {
@@ -85,7 +109,7 @@ export class AdminService {
   }
 
   getThisUser(userId): Observable<any> {
-    return this.http.get<any>(`${this.url}/admin/getthisuser/userId`);
+    return this.http.get<any>(`${this.url}/admin/getthisuser/${userId}`);
   }
 
   getAllUsers(): Observable<any> {

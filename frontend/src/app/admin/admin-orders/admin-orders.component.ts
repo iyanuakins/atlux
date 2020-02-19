@@ -14,12 +14,13 @@ export class AdminOrdersComponent implements OnInit {
   loader: Boolean;
   orderID: String;
   drivers: Object;
+  message: String;
   processOrderGroup: FormGroup;
   constructor(private adminService: AdminService,
               private form: FormBuilder) { 
     this.processOrderGroup = this.form.group({
       driver: ['', Validators.required],
-      orderID: ['', Validators.required]
+      orderID: ['']
     })
   }
 
@@ -33,7 +34,7 @@ export class AdminOrdersComponent implements OnInit {
   }
 
 
-  processOrder(orderID) {
+  startProcess(orderID) {
     this.adminService.getAllDriver()
       .subscribe((res) => {
         if (res.success) {
@@ -41,6 +42,65 @@ export class AdminOrdersComponent implements OnInit {
             this.drivers = res.drivers;
             this.orderID = orderID;
             document.getElementById('viewBtn').click();
+          }
+        }
+      })
+  }
+
+  processOrder(order) {
+    const driverID = this.processOrderGroup.value.driver;
+    const data = {
+      driverID,
+      order
+    }
+    this.adminService.approveOrder(data)
+      .subscribe((res) => {
+        if (res.success) {
+          if (res.success) {
+            this.adminService.getAllOrders()
+              .subscribe((res) => {
+                if (res.success) {
+                  if (res.available) {
+                    this.orders = res.orders;
+                  }
+                }
+              })
+            this.message = 'Order Processed';
+            setTimeout(() => {
+              this.message = '';
+            }, 2000);
+          } else {
+            this.message = 'Unable to process order';
+            setTimeout(() => {
+              this.message = '';
+            }, 2000);
+          }
+        }
+      })
+  }
+
+  completeOrder(orderID) { 
+    this.adminService.completeOrder({orderID})
+      .subscribe((res) => {
+        if (res.success) {
+          if (res.success) {
+            this.adminService.getAllOrders()
+              .subscribe((res) => {
+                if (res.success) {
+                  if (res.available) {
+                    this.orders = res.orders;
+                  }
+                }
+              })
+            this.message = 'Order Completed';
+            setTimeout(() => {
+              this.message = '';
+            }, 2000);
+          } else {
+            this.message = 'Unable to complete order';
+            setTimeout(() => {
+              this.message = '';
+            }, 2000);
           }
         }
       })

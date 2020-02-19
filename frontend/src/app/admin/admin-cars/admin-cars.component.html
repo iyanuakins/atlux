@@ -5,9 +5,10 @@
             <div class="sidebar">
                 <ul>
                     <li><a [routerLink]="[ '/admin' ]" [routerLinkActiveOptions]= "{ exact: true }" routerLinkActive="actives"> Dashboard </a></li>
-                    <li><a [routerLink]="[ '/admin/manage/orders' ]" routerLinkActive="actives"> Manage Orders </a></li>
                     <li><a [routerLink]="[ '/admin/manage/users' ]" routerLinkActive="actives"> Manage Users </a></li>
-                    <li><a [routerLink]="[ '/admin/manage/drivers' ]" routerLinkActive="actives"> Manage Drivers </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/brands' ]" routerLinkActive="actives"> Manage brands </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/orders' ]" routerLinkActive="actives"> Manage Orders </a></li>
+                    <li><a [routerLink]="[ '/admin/manage/cars' ]" routerLinkActive="actives"> Manage Cars </a></li>
                     <li><a [routerLink]="[ '/admin/manage/reviews' ]" routerLinkActive="actives"> Manage Reviews </a></li>
                     <li><a [routerLink]="[ '/user/contact' ]" routerLinkActive="actives"> Contact </a></li>
                     <li><a [routerLink]="[ '/user/about' ]" routerLinkActive="actives"> About </a></li>
@@ -28,7 +29,82 @@
                 <div class="loader-overlay" *ngIf="loader">
                     <img src="./../../../assets/img/loader.gif" alt="" class="loader">
                 </div>
-    
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="alert-success text-success text-center mb-2 p-3" *ngIf="message">{{message}}</div>
+                            <div class="btn-group mt-3 mb-3 float-right" data-toggle="buttons">
+                                <span *ngIf="!avail">
+                                    <button class="btn btn-success btn-lg btn-outline-light" (click) ="addBrandToDB()">Add Brand to DB</button>
+                                    <button class="btn btn-success btn-lg btn-outline-light" (click) ="addTypeToDB()">Add Type to DB</button>
+                                </span>
+                                <button class="btn btn-success btn-lg btn-outline-light" data-toggle="modal" data-target="#manageModal">Add car Brand/Type</button>
+                                <!-- <button class="btn btn-success btn-lg btn-outline-light" (click) ="addTypeToDB()">Add Type to DB</button> -->
+                            </div>
+                             
+                            <div class="modal fade" id="manageModal" tabindex="-1" role="dialog" aria-labelledby="manageModalTitle" aria-hidden="true" data-backdrop="false">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="pr-2 float-right">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true" >&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                <nav>
+                                                    <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                                                        <a class="nav-item nav-link active" id="type-tab" data-toggle="tab" href="#type" role="tab" aria-controls="type-tab" aria-selected="true">Add New Car Tye</a>
+                                                        <a class="nav-item nav-link" id="brand-tab" data-toggle="tab" href="#brand" role="tab" aria-controls="brand-tab" aria-selected="false">Add New Car Brand</a>
+                                                    </div>
+                                                </nav>
+                                                <div class="tab-content mt-4" id="nav-tabContent">
+                                                    <div class="tab-pane fade" id="brand" role="tabpanel" aria-labelledby="brand-tab">
+                                                            <div class="alert-success text-success text-center mb-2 p-3" *ngIf="carMessage">{{carMessage}}</div>
+                                                            <form action="" [formGroup]="brandGroup"  class="pt-4">
+                                                                    <div class="form-group">
+                                                                        <div class="input-group">
+                                                                            <label for="brandName" class="sr-only">Brand Name</label>
+                                                                            <div class="input-group-prepend">
+                                                                                <div class="input-group-text">Brand Name</div>
+                                                                            </div>
+                                                                            <input type="text" class="form-control" [class.is-invalid] ="brandGroup.controls.brandName.touched && brandGroup.controls.brandName.errors" formControlName="brandName" id="brandName" placeholder="Brand Name">
+                                                                        </div>
+                                                                        <div class="alert-danger text-danger mt-1" *ngIf="brandGroup.controls.brandName.touched && brandGroup.controls.brandName.errors">
+                                                                            <small [hidden]="!brandGroup.controls.brandName.errors.required">Field is required </small>
+                                                                        </div>
+                                                                    </div>
+                                                                <button type="button" class="btn bg-success btn-outline-light btn-lg float-right" (click)="addCarBrand()">Add Car Brand</button>
+                                                            </form>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="type" role="tabpanel" aria-labelledby="type-tab">
+                                                            <div class="alert-success text-success text-center mb-2 p-3" *ngIf="carMessage">{{carMessage}}</div>
+                                                            <form action="" [formGroup]="typeGroup"  class="pt-4">
+                                                                    <div class="form-group">
+                                                                        <div class="input-group">
+                                                                            <label for="typeName" class="sr-only">Type Name</label>
+                                                                            <div class="input-group-prepend">
+                                                                                <div class="input-group-text">Type Name</div>
+                                                                            </div>
+                                                                            <input type="text" class="form-control" [class.is-invalid] ="typeGroup.controls.typeName.touched && typeGroup.controls.typeName.errors" formControlName="typeName" id="typeName" placeholder="Type Name">
+                                                                        </div>
+                                                                        <div class="alert-danger text-danger mt-1" *ngIf="typeGroup.controls.typeName.touched && typeGroup.controls.typeName.errors">
+                                                                            <small [hidden]="!typeGroup.controls.typeName.errors.required"> Field is required </small>
+                                                                        </div>
+                                                                    </div>
+                                                                <button type="button" class="btn bg-success btn-outline-light btn-lg float-right" (click)="addCarType()">Add Car Type</button>
+                                                            </form>
+                                                    </div>
+                                                </div> 
+                                        </div>
+                                    </div>
+                                    
+                                    </div> 
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                </div>
             
         </div>
     </div>

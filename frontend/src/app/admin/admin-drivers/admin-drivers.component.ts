@@ -17,10 +17,13 @@ export class AdminDriversComponent implements OnInit {
   emailTaken: boolean = false;
   drivers: Object;
   driverGroup : FormGroup;
+  suspendGroup : FormGroup;
   message: String;
+  isAdd: Boolean = true;
   constructor(private adminService: AdminService,
               private form: FormBuilder,
-              private auth: AuthService) { 
+              private auth: AuthService) {
+
     this.driverGroup = this.form.group({
       username: ['', Validators.required],
       email: ['', [Validators.required,
@@ -37,14 +40,26 @@ export class AdminDriversComponent implements OnInit {
                   Validators.pattern('^[0-9]{11}')]
       ]
     });
+
+    this.suspendGroup = this.form.group({
+      driver: ['', Validators.required]
+    });
   }
 
 
-  sidebarActive () {
+  sidebarActive() {
     if (this.sidebar === true ) {
       this.sidebar = false;
     } else {
       this.sidebar = true;
+    }
+  }
+
+  toggle() {
+    if (this.isAdd === true ) {
+      this.isAdd = false;
+    } else {
+      this.isAdd = true;
     }
   }
 
@@ -57,21 +72,23 @@ export class AdminDriversComponent implements OnInit {
     let address = this.driverGroup.value.address;
     let username = this.driverGroup.value.username;
 
-    let data = {
-      firstName,
-      lastName,
-      phNum,
+    let driver = {
+      username,
       email,
       password,
-      address,
-      username
+      details: {
+        firstName,
+        lastName,
+        address,
+        phNum
+      } 
     }
-
-    this.adminService.addDriver(data)
+    this.adminService.addDriver(driver)
       .subscribe(
         (res) => {
           if (res.success) {
             this.message = 'Driver successful added';
+            this.driverGroup.reset();
             setTimeout(() => {
               this.message = '';
             }, 2000);
@@ -85,8 +102,26 @@ export class AdminDriversComponent implements OnInit {
       );
   }
 
+  supdendDriver() {
+    let driverID = this.suspendGroup.value.driver;
+    this.adminService.suspendDriver(driverID)
+      .subscribe((res) => {
+        if (res.success) {
+          this.message = 'Driver Suspended';
+          this.suspendGroup.reset();
+          setTimeout(() => {
+            this.message = '';
+          }, 2000);
+        } else {
+          this.message = 'Unable to suspend driver';
+          setTimeout(() => {
+            this.message = '';
+          }, 2000);
+        }
+      })
+  }
 
-  checkEmail () {
+  checkEmail() {
     let email = this.driverGroup.value.email;
     
     this.auth.checkEmail(email).subscribe(
@@ -101,7 +136,7 @@ export class AdminDriversComponent implements OnInit {
   }
 
 
-  checkUsername () {
+  checkUsername() {
     let username = this.driverGroup.value.username;
     
     this.auth.checkUsername(username).subscribe(
@@ -116,6 +151,20 @@ export class AdminDriversComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.adminService.getAllDriver()
+    .subscribe((res) => {
+      if (res.success) {
+        if (res.available) {
+          this.drivers = res.drivers;
+        } else {
+          this.drivers = [];
+        }
+        this.loader = false;
+      } else {
+        this.drivers = [];
+        this.loader = false;
+        }
+      })
   }
 
 }

@@ -147,7 +147,7 @@ export class AuthComponent implements OnInit {
     });
 
     if(!!localStorage.getItem('token') && !!localStorage.getItem('user')){
-      this.router.navigate(['/user']);
+      this.userService.updateUser();
     }
 
     if (this.auth.isLoggedOut) {
