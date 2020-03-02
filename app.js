@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const path = require('path');
 const PORT = process.env.PORT || 4000;
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -46,11 +47,18 @@ mongoose.set('useFindAndModify', false);
 const connection = mongoose.connection;
 
 
-connection.once('open', () => console.log('Connected to MongoDB....'))
+connection.once('open', () => console.log('Connected to MongoDB....'));
 
-app.get('', (req, res) => {
-    res.send("Hello World");
-});
+const clientPath = path.join(__dirname, "../", "frontend/dist/frontend");
+
+if (fs.existsSync(clientPath)) {
+    app.use(express.static(clientPath));
+    app.get('/', (req, res) => {
+        res.send(path.join(clientPath, "index.html"))
+    });
+}
+
+
 
 app.use('/auth', authRoutes);
 app.use('/home', homeRoutes);

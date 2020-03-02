@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  url: String = "http://localhost:4000";
+  url: String = environment.url || "http://localhost:4000";
   constructor(private http: HttpClient,
               private router: Router) { }
 

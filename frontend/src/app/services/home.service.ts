@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService { 
   
-  url: String = "http://localhost:4000";
+  url: String = environment.url || "http://localhost:4000";
   cars: any;
   cartTryData = new BehaviorSubject<string>('0');
   cartLength =this.cartTryData.asObservable();
