@@ -49,7 +49,7 @@ const connection = mongoose.connection;
 
 connection.once('open', () => console.log('Connected to MongoDB....'));
 
-const clientPath = path.join(__dirname, "../", "frontend/dist/frontend");
+const clientPath = path.join(__dirname, "./", "frontend/dist/frontend");
 
 if (fs.existsSync(clientPath)) {
     app.use(express.static(clientPath));
