@@ -11,6 +11,7 @@ const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/user');
 const homeRoutes = require('./routes/home');
 const jwt = require('jsonwebtoken');
+require("dotenv").config();
 const secKey = "03SecretKey04";
 
 
@@ -39,7 +40,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/atlux', {useNewUrlParser: true})
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true})
     .catch((err) => {
         console.log(err);
     })
