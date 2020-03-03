@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: "https://atlux.herokuapp.com/"
+  url: "https://atlux.herokuapp.com"
 };
 
 /*
