@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "NODE_ENV=production ng serve",
+    "start": "node NODE_ENV=production ng serve",
     "build": "npx ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -32,7 +32,7 @@
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
-    
+
   },
   "devDependencies": {
     "@angular/language-service": "~7.2.0",
